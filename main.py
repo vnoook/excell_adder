@@ -38,21 +38,21 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.flag_edit_prest = None
 
         # главное окно, надпись на нём и размеры
-        self.setWindowTitle('Сравнение номеров дел')
+        self.setWindowTitle('Добор в эксель')
         self.setGeometry(300, 300, 900, 300)
 
-        # # объекты на главном окне
-        # # label_select_file_IC
-        # self.label_select_file_IC = PyQt5.QtWidgets.QLabel(self)
-        # self.label_select_file_IC.setObjectName('label_select_file_IC')
-        # self.label_select_file_IC.setText('1. Выберите файл ИЦ')
-        # self.label_select_file_IC.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
-        # font = PyQt5.QtGui.QFont()
-        # font.setPointSize(12)
-        # self.label_select_file_IC.setFont(font)
-        # self.label_select_file_IC.adjustSize()
-        # self.label_select_file_IC.setToolTip(self.label_select_file_IC.objectName())
-        #
+        # объекты на главном окне
+        # label_full_file
+        self.label_full_file = PyQt5.QtWidgets.QLabel(self)
+        self.label_full_file.setObjectName('label_full_file')
+        self.label_full_file.setText('1. Выберите полный файл')
+        self.label_full_file.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.label_full_file.setFont(font)
+        self.label_full_file.adjustSize()
+        self.label_full_file.setToolTip(self.label_full_file.objectName())
+
         # # toolButton_select_file_IC
         # self.toolButton_select_file_IC = PyQt5.QtWidgets.QPushButton(self)
         # self.toolButton_select_file_IC.setObjectName('toolButton_select_file_IC')
