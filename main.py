@@ -53,15 +53,15 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_full_file.adjustSize()
         self.label_full_file.setToolTip(self.label_full_file.objectName())
 
-        # # toolButton_select_file_IC
-        # self.toolButton_select_file_IC = PyQt5.QtWidgets.QPushButton(self)
-        # self.toolButton_select_file_IC.setObjectName('toolButton_select_file_IC')
-        # self.toolButton_select_file_IC.setText('...')
-        # self.toolButton_select_file_IC.setGeometry(PyQt5.QtCore.QRect(10, 40, 50, 20))
-        # self.toolButton_select_file_IC.setFixedWidth(50)
-        # self.toolButton_select_file_IC.clicked.connect(self.select_file)
-        # self.toolButton_select_file_IC.setToolTip(self.toolButton_select_file_IC.objectName())
-        #
+        # toolButton_select_full_file
+        self.toolButton_select_full_file = PyQt5.QtWidgets.QPushButton(self)
+        self.toolButton_select_full_file.setObjectName('toolButton_select_full_file')
+        self.toolButton_select_full_file.setText('...')
+        self.toolButton_select_full_file.setGeometry(PyQt5.QtCore.QRect(10, 40, 50, 20))
+        self.toolButton_select_full_file.setFixedWidth(50)
+        self.toolButton_select_full_file.clicked.connect(self.select_file)
+        self.toolButton_select_full_file.setToolTip(self.toolButton_select_full_file.objectName())
+
         # # label_path_file_IC
         # self.label_path_file_IC = PyQt5.QtWidgets.QLabel(self)
         # self.label_path_file_IC.setObjectName('label_path_file_IC')
@@ -179,75 +179,76 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.button_exit.clicked.connect(self.click_on_btn_exit)
         # self.button_exit.setToolTip(self.button_exit.objectName())
         #
-    # # событие - нажатие на кнопку выбора файла
-    # def select_file(self):
-    #     # запоминание старого значения пути выбора файлов
-    #     old_path_of_selected_file_IC = self.label_path_file_IC.text()
-    #     old_path_of_selected_file_GASPS = self.label_path_file_GASPS.text()
-    #
-    #     # определение какая кнопка выбора файла нажата
-    #     # если ИЦ, то выдать в окно про ИЦ
-    #     if self.sender().objectName() == self.toolButton_select_file_IC.objectName():
-    #         self.info_for_open_file = 'Выберите файл ИЦ формата Excel, версии старше 2007 года (.XLSX)'
-    #     # если ГАСПС, то выдать в окно про ГАСПС
-    #     elif self.sender().objectName() == self.toolButton_select_file_GASPS.objectName():
-    #         self.info_for_open_file = 'Выберите файл ГАС ПС формата Excel, версии старше 2007 года (.XLSX)'
-    #
-    #     # непосредственное окно выбора файла и переменная для хранения пути файла
-    #     data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
-    #                                                                          self.info_for_open_file,
-    #                                                                          self.info_path_open_file,
-    #                                                                          self.info_extention_open_file)
-    #     # вычленение пути файла из data_of_open_file_name
-    #     file_name = data_of_open_file_name[0]
-    #
-    #     # выбор где и что менять исходя из выбора пользователя
-    #     # нажата кнопка выбора ИЦ
-    #     if self.sender().objectName() == self.toolButton_select_file_IC.objectName():
-    #         if file_name == '':
-    #             self.label_path_file_IC.setText(old_path_of_selected_file_IC)
-    #             self.label_path_file_IC.adjustSize()
-    #         else:
-    #             old_path_of_selected_file_IC = self.label_path_file_IC.text()
-    #             self.label_path_file_IC.setText(file_name)
-    #             self.label_path_file_IC.adjustSize()
-    #
-    #     # нажата кнопка выбора ГАСПС
-    #     if self.sender().objectName() == self.toolButton_select_file_GASPS.objectName():
-    #         if file_name == '':
-    #             self.label_path_file_GASPS.setText(old_path_of_selected_file_GASPS)
-    #             self.label_path_file_GASPS.adjustSize()
-    #         else:
-    #             old_path_of_selected_file_GASPS = self.label_path_file_GASPS.text()
-    #             self.label_path_file_GASPS.setText(file_name)
-    #             self.label_path_file_GASPS.adjustSize()
-    #
-    #     # активация и деактивация объектов на форме зависящее от выбраны ли все файлы и они разные
-    #     if self.label_path_file_IC.text() != self.label_path_file_GASPS.text():
-    #         if self.text_empty_path_file not in (self.label_path_file_IC.text(), self.label_path_file_GASPS.text()):
-    #             self.comboBox_liter_IC.setEnabled(True)
-    #             self.comboBox_digit_IC.setEnabled(True)
-    #
-    #             self.checkBox_prest_IC.setEnabled(True)
-    #             self.comboBox_liter_prest_IC.setEnabled(True)
-    #
-    #             self.comboBox_liter_GASPS.setEnabled(True)
-    #             self.comboBox_digit_GASPS.setEnabled(True)
-    #             self.do_fill_comboboxes()
-    #
-    #             self.flag_edit_prest = None
-    #     else:
-    #         self.comboBox_liter_IC.setEnabled(False)
-    #         self.comboBox_digit_IC.setEnabled(False)
-    #
-    #         self.checkBox_prest_IC.setEnabled(False)
-    #         self.comboBox_liter_prest_IC.setEnabled(False)
-    #
-    #         self.comboBox_liter_GASPS.setEnabled(False)
-    #         self.comboBox_digit_GASPS.setEnabled(False)
-    #
-    #         self.flag_edit_prest = None
-    #
+    # событие - нажатие на кнопку выбора файла
+    def select_file(self):
+        pass
+        # # запоминание старого значения пути выбора файлов
+        # old_path_of_selected_file_IC = self.label_path_file_IC.text()
+        # old_path_of_selected_file_GASPS = self.label_path_file_GASPS.text()
+        #
+        # # определение какая кнопка выбора файла нажата
+        # # если ИЦ, то выдать в окно про ИЦ
+        # if self.sender().objectName() == self.toolButton_select_file_IC.objectName():
+        #     self.info_for_open_file = 'Выберите файл ИЦ формата Excel, версии старше 2007 года (.XLSX)'
+        # # если ГАСПС, то выдать в окно про ГАСПС
+        # elif self.sender().objectName() == self.toolButton_select_file_GASPS.objectName():
+        #     self.info_for_open_file = 'Выберите файл ГАС ПС формата Excel, версии старше 2007 года (.XLSX)'
+        #
+        # # непосредственное окно выбора файла и переменная для хранения пути файла
+        # data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
+        #                                                                      self.info_for_open_file,
+        #                                                                      self.info_path_open_file,
+        #                                                                      self.info_extention_open_file)
+        # # вычленение пути файла из data_of_open_file_name
+        # file_name = data_of_open_file_name[0]
+        #
+        # # выбор где и что менять исходя из выбора пользователя
+        # # нажата кнопка выбора ИЦ
+        # if self.sender().objectName() == self.toolButton_select_file_IC.objectName():
+        #     if file_name == '':
+        #         self.label_path_file_IC.setText(old_path_of_selected_file_IC)
+        #         self.label_path_file_IC.adjustSize()
+        #     else:
+        #         old_path_of_selected_file_IC = self.label_path_file_IC.text()
+        #         self.label_path_file_IC.setText(file_name)
+        #         self.label_path_file_IC.adjustSize()
+        #
+        # # нажата кнопка выбора ГАСПС
+        # if self.sender().objectName() == self.toolButton_select_file_GASPS.objectName():
+        #     if file_name == '':
+        #         self.label_path_file_GASPS.setText(old_path_of_selected_file_GASPS)
+        #         self.label_path_file_GASPS.adjustSize()
+        #     else:
+        #         old_path_of_selected_file_GASPS = self.label_path_file_GASPS.text()
+        #         self.label_path_file_GASPS.setText(file_name)
+        #         self.label_path_file_GASPS.adjustSize()
+        #
+        # # активация и деактивация объектов на форме зависящее от выбраны ли все файлы и они разные
+        # if self.label_path_file_IC.text() != self.label_path_file_GASPS.text():
+        #     if self.text_empty_path_file not in (self.label_path_file_IC.text(), self.label_path_file_GASPS.text()):
+        #         self.comboBox_liter_IC.setEnabled(True)
+        #         self.comboBox_digit_IC.setEnabled(True)
+        #
+        #         self.checkBox_prest_IC.setEnabled(True)
+        #         self.comboBox_liter_prest_IC.setEnabled(True)
+        #
+        #         self.comboBox_liter_GASPS.setEnabled(True)
+        #         self.comboBox_digit_GASPS.setEnabled(True)
+        #         self.do_fill_comboboxes()
+        #
+        #         self.flag_edit_prest = None
+        # else:
+        #     self.comboBox_liter_IC.setEnabled(False)
+        #     self.comboBox_digit_IC.setEnabled(False)
+        #
+        #     self.checkBox_prest_IC.setEnabled(False)
+        #     self.comboBox_liter_prest_IC.setEnabled(False)
+        #
+        #     self.comboBox_liter_GASPS.setEnabled(False)
+        #     self.comboBox_digit_GASPS.setEnabled(False)
+        #
+        #     self.flag_edit_prest = None
+
     # # заполнение комбобоксов
     # def do_fill_comboboxes(self):
     #     # присвоение файлов
