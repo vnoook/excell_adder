@@ -27,7 +27,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.info_for_open_file = ''
         # self.info_path_open_file = ''
         # self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
-        # self.text_empty_path_file = 'файл пока не выбран'
+        self.text_empty_path_file = 'файл пока не выбран'
         # self.text_empty_combobox = 'не выбрано'
         # self.file_IC = ''
         # self.file_GASPS = ''
@@ -62,17 +62,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.toolButton_select_full_file.clicked.connect(self.select_file)
         self.toolButton_select_full_file.setToolTip(self.toolButton_select_full_file.objectName())
 
-        # # label_path_file_IC
-        # self.label_path_file_IC = PyQt5.QtWidgets.QLabel(self)
-        # self.label_path_file_IC.setObjectName('label_path_file_IC')
-        # self.label_path_file_IC.setText(self.text_empty_path_file)
-        # self.label_path_file_IC.setGeometry(PyQt5.QtCore.QRect(70, 40, 820, 16))
-        # font = PyQt5.QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_path_file_IC.setFont(font)
-        # self.label_path_file_IC.adjustSize()
-        # self.label_path_file_IC.setToolTip(self.label_path_file_IC.objectName())
-        #
+        # label_path_full_file
+        self.label_path_full_file = PyQt5.QtWidgets.QLabel(self)
+        self.label_path_full_file.setObjectName('label_path_full_file')
+        self.label_path_full_file.setText(self.text_empty_path_file)
+        self.label_path_full_file.setGeometry(PyQt5.QtCore.QRect(70, 40, 820, 16))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(10)
+        self.label_path_full_file.setFont(font)
+        self.label_path_full_file.adjustSize()
+        self.label_path_full_file.setToolTip(self.label_path_full_file.objectName())
+
         # # comboBox_liter_IC
         # self.comboBox_liter_IC = PyQt5.QtWidgets.QComboBox(self)
         # self.comboBox_liter_IC.setObjectName('comboBox_liter_IC')
@@ -110,28 +110,28 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.comboBox_liter_prest_IC.setVisible(False)
         # self.comboBox_liter_prest_IC.adjustSize()
         # self.comboBox_liter_prest_IC.setToolTip(self.comboBox_liter_prest_IC.objectName())
-        #
-        # # label_select_file_GASPS
-        # self.label_select_file_GASPS = PyQt5.QtWidgets.QLabel(self)
-        # self.label_select_file_GASPS.setObjectName('label_select_file_GASPS')
-        # self.label_select_file_GASPS.setText('2. Выберите файл ГАС ПС')
-        # self.label_select_file_GASPS.setGeometry(PyQt5.QtCore.QRect(10, 120, 150, 40))
-        # font = PyQt5.QtGui.QFont()
-        # font.setPointSize(12)
-        # self.label_select_file_GASPS.setFont(font)
-        # self.label_select_file_GASPS.adjustSize()
-        # self.label_select_file_GASPS.setToolTip(self.label_select_file_GASPS.objectName())
-        #
-        # # label_path_file_GASPS
-        # self.label_path_file_GASPS = PyQt5.QtWidgets.QLabel(self)
-        # self.label_path_file_GASPS.setObjectName('label_path_file_GASPS')
-        # self.label_path_file_GASPS.setText(self.text_empty_path_file)
-        # self.label_path_file_GASPS.setGeometry(PyQt5.QtCore.QRect(70, 150, 820, 20))
-        # font = PyQt5.QtGui.QFont()
-        # font.setPointSize(10)
-        # self.label_path_file_GASPS.setFont(font)
-        # self.label_path_file_GASPS.adjustSize()
-        # self.label_path_file_GASPS.setToolTip(self.label_path_file_GASPS.objectName())
+
+        # label_half_file
+        self.label_half_file = PyQt5.QtWidgets.QLabel(self)
+        self.label_half_file.setObjectName('label_half_file')
+        self.label_half_file.setText('2. Выберите неполный файл')
+        self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 120, 150, 40))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.label_half_file.setFont(font)
+        self.label_half_file.adjustSize()
+        self.label_half_file.setToolTip(self.label_half_file.objectName())
+
+        # label_path_half_file
+        self.label_path_file_GASPS = PyQt5.QtWidgets.QLabel(self)
+        self.label_path_file_GASPS.setObjectName('label_path_file_GASPS')
+        self.label_path_file_GASPS.setText(self.text_empty_path_file)
+        self.label_path_file_GASPS.setGeometry(PyQt5.QtCore.QRect(70, 150, 820, 20))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(10)
+        self.label_path_file_GASPS.setFont(font)
+        self.label_path_file_GASPS.adjustSize()
+        self.label_path_file_GASPS.setToolTip(self.label_path_file_GASPS.objectName())
 
         # toolButton_select_half_file
         self.toolButton_select_half_file = PyQt5.QtWidgets.QPushButton(self)
