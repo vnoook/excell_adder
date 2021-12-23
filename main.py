@@ -132,16 +132,16 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.label_path_file_GASPS.setFont(font)
         # self.label_path_file_GASPS.adjustSize()
         # self.label_path_file_GASPS.setToolTip(self.label_path_file_GASPS.objectName())
-        #
-        # # toolButton_select_file_GASPS
-        # self.toolButton_select_file_GASPS = PyQt5.QtWidgets.QPushButton(self)
-        # self.toolButton_select_file_GASPS.setObjectName('toolButton_select_file_GASPS')
-        # self.toolButton_select_file_GASPS.setText('...')
-        # self.toolButton_select_file_GASPS.setGeometry(PyQt5.QtCore.QRect(10, 150, 50, 20))
-        # self.toolButton_select_file_GASPS.setFixedWidth(50)
-        # self.toolButton_select_file_GASPS.clicked.connect(self.select_file)
-        # self.toolButton_select_file_GASPS.setToolTip(self.toolButton_select_file_GASPS.objectName())
-        #
+
+        # toolButton_select_half_file
+        self.toolButton_select_half_file = PyQt5.QtWidgets.QPushButton(self)
+        self.toolButton_select_half_file.setObjectName('toolButton_select_half_file')
+        self.toolButton_select_half_file.setText('...')
+        self.toolButton_select_half_file.setGeometry(PyQt5.QtCore.QRect(10, 150, 50, 20))
+        self.toolButton_select_half_file.setFixedWidth(50)
+        self.toolButton_select_half_file.clicked.connect(self.select_file)
+        self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
+
         # # comboBox_liter_GASPS
         # self.comboBox_liter_GASPS = PyQt5.QtWidgets.QComboBox(self)
         # self.comboBox_liter_GASPS.setObjectName('comboBox_liter_GASPS')
