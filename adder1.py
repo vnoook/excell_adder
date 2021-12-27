@@ -1,18 +1,15 @@
 import time
 import openpyxl
 
-
 # считаю время скрипта
 time_start = time.time()
 print('начинается' + '.'*20)
-
 
 # файлы для работы
 xl_my_with_id = 'res/25_26_11_2021_my_with_id.xlsx'
 xl_real_data = 'res/25_11_2021_real_data.xlsx'
 xl_ext_data = 'res/25-26.11.2021-ext_data.xlsx'
 xl_all_users = 'res/allusers.xlsx'
-
 
 # переменные для работы
 min_row_xl_my_with_id = 2
@@ -35,7 +32,6 @@ max_row_xl_all_users = 11561
 min_col_xl_all_users = 1
 max_col_xl_all_users = 12
 
-
 # открываю книги
 wb_my_with_id = openpyxl.load_workbook(xl_my_with_id)
 wb_my_with_id_s = wb_my_with_id.active
@@ -46,9 +42,10 @@ wb_ext_data_s = wb_ext_data.active
 wb_all_users = openpyxl.load_workbook(xl_all_users)
 wb_all_users_s = wb_all_users.active
 
-
+# алгоритмы добавления данных
 for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
-    print(i, ' == ', wb_my_with_id_s.cell(i, 1).value)
+    id_user = wb_my_with_id_s.cell(i, 1).value
+    print(i, ' == ', id_user)
 
 # for dict_key in xl_pm_sheets:
 #     if wb_pm.index(wb_pm_s) in (1, 2, 3, 4, 5, 6):
@@ -73,4 +70,4 @@ time_finish = time.time()
 print('\n' + '.'*30 + 'закончено за', round(time_finish-time_start, 3), 'секунд')
 
 # закрываю программу
-input('\nНажмите ENTER')
+# input('\nНажмите ENTER')
