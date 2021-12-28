@@ -44,8 +44,20 @@ wb_all_users_s = wb_all_users.active
 
 # алгоритмы добавления данных
 for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
-    id_user = wb_my_with_id_s.cell(i, 1).value
-    print(i, ' == ', id_user)
+    user_id = wb_my_with_id_s.cell(i, 1).value
+    user_grade = 'через поиск совпадений в xl_all_users'
+    user_title = 'через поиск совпадений в xl_all_users'
+    user_date_reg = 'нет такой информации, надо выдумать алгоритм подсчёта от даты мероприятия в xl_real_data'
+    user_platform = 'xl_real_data'
+    user_country = 'xl_real_data'
+    user_city = 'xl_real_data'
+    user_ip = 'xl_real_data'
+    user_time_in = 'xl_real_data'
+    user_time_out = 'xl_real_data'
+    user_duration = 'xl_real_data'
+    user_percent = 'xl_real_data'
+
+    print(i, ' == ', user_id)
 
 # for dict_key in xl_pm_sheets:
 #     if wb_pm.index(wb_pm_s) in (1, 2, 3, 4, 5, 6):
