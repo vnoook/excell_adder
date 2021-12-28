@@ -52,10 +52,10 @@ for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
     user_country = 'xl_real_data'
     user_city = 'xl_real_data'
     user_ip = 'xl_real_data'
-    user_time_in = 'xl_real_data'
-    user_time_out = 'xl_real_data'
-    user_duration = 'xl_real_data'
-    user_percent = 'xl_real_data'
+    user_time_in = 'xl_ext_data'
+    user_time_out = 'xl_ext_data'
+    user_duration = 'xl_ext_data'
+    user_percent = 'xl_ext_data'
 
     print(i, ' == ', user_id)
 
