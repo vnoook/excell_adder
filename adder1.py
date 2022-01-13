@@ -37,10 +37,19 @@ wb_my_with_id = openpyxl.load_workbook(xl_my_with_id)
 wb_my_with_id_s = wb_my_with_id.active
 wb_real_data = openpyxl.load_workbook(xl_real_data)
 wb_real_data_s = wb_real_data.active
-wb_ext_data = openpyxl.load_workbook(xl_ext_data)
-wb_ext_data_s = wb_ext_data.active
-wb_all_users = openpyxl.load_workbook(xl_all_users)
-wb_all_users_s = wb_all_users.active
+# wb_ext_data = openpyxl.load_workbook(xl_ext_data)
+# wb_ext_data_s = wb_ext_data.active
+# wb_all_users = openpyxl.load_workbook(xl_all_users)
+# wb_all_users_s = wb_all_users.active
+
+# создаю список platform
+for j in [1, 2, 3]:
+    pass
+    # min_row_xl_real_data = 2
+    # max_row_xl_real_data = 11561
+    # min_col_xl_real_data = 1
+    # max_col_xl_real_data = 12
+
 
 # алгоритмы добавления данных
 for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
@@ -58,6 +67,7 @@ for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
     user_percent = 'xl_ext_data'
 
     print(i, ' == ', user_id)
+    print(i, ' == ', user_platform)
 
 # for dict_key in xl_pm_sheets:
 #     if wb_pm.index(wb_pm_s) in (1, 2, 3, 4, 5, 6):
@@ -71,10 +81,10 @@ for i in range(min_row_xl_my_with_id, max_row_xl_my_with_id+1):
 wb_my_with_id.save(xl_my_with_id)
 wb_my_with_id.close()
 
-# закрываю файлы из которых беру данные
-wb_real_data.close()
-wb_ext_data.close()
-wb_all_users.close()
+# # закрываю файлы из которых беру данные
+# wb_real_data.close()
+# wb_ext_data.close()
+# wb_all_users.close()
 
 
 # считаю время скрипта
