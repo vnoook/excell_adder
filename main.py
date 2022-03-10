@@ -35,7 +35,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.wb_file_IC_s = ''
         # self.wb_file_GASPS = ''
         # self.wb_file_GASPS_s = ''
-        # self.flag_edit_prest = None
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -167,9 +166,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # активация и деактивация объектов на форме зависящее от выбраны ли все файлы и они разные
         if self.label_path_full_file.text() != self.label_path_half_file.text():
             if self.text_empty_path_file not in (self.label_path_full_file.text(), self.label_path_half_file.text()):
-                self.flag_edit_prest = None
+                self.pushButton_do_fill_data.setEnabled(True)
         else:
-            self.flag_edit_prest = None
+            self.pushButton_do_fill_data.setEnabled(False)
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
