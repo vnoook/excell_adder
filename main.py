@@ -172,17 +172,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
-        pass
-        # # считаю время заполнения
-        # time_start = time.time()
-        #
-        # # флаг определения редактировать ли колонку с преступлениями
-        # self.flag_edit_prest = False
-        #
-        # # определение множеств
-        # set_data_IC = set()
-        # set_data_GASPS = set()
-        #
+        # считаю время заполнения
+        time_start = time.time()
+
+        # определение множеств
+        set_data_full_file = set()
+        set_data_half_file = set()
+
         # # проверка на то что четыре "главные" комбобокса заполнены
         # if self.text_empty_combobox not in (self.comboBox_liter_IC.itemText(self.comboBox_liter_IC.currentIndex()),
         #                                     self.comboBox_digit_IC.itemText(self.comboBox_digit_IC.currentIndex()),
