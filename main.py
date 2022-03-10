@@ -7,14 +7,14 @@
 # ...
 
 import sys
-# import time
+import time
 import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-# import openpyxl
-# import openpyxl.utils
-# import openpyxl.styles
+import openpyxl
+import openpyxl.utils
+import openpyxl.styles
 
 
 # класс главного окна
@@ -23,9 +23,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
     def __init__(self):
         super(Window, self).__init__()
 
-        # # переменные, атрибуты
-        # self.info_for_open_file = ''
-        # self.info_path_open_file = ''
+        # переменные, атрибуты
+        self.info_for_open_file = ''
+        self.info_path_open_file = ''
         self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
         self.text_empty_path_file = 'файл пока не выбран'
         # self.text_empty_combobox = 'не выбрано'
@@ -39,7 +39,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
-        self.setGeometry(300, 300, 900, 300)
+        self.setGeometry(600, 400, 900, 300)
 
         # объекты на главном окне
         # label_full_file
@@ -73,44 +73,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_path_full_file.adjustSize()
         self.label_path_full_file.setToolTip(self.label_path_full_file.objectName())
 
-        # # comboBox_liter_IC
-        # self.comboBox_liter_IC = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_liter_IC.setObjectName('comboBox_liter_IC')
-        # self.comboBox_liter_IC.setGeometry(PyQt5.QtCore.QRect(10, 70, 70, 20))
-        # self.comboBox_liter_IC.addItem('пусто')
-        # self.comboBox_liter_IC.setEnabled(False)
-        # self.comboBox_liter_IC.adjustSize()
-        # self.comboBox_liter_IC.setToolTip(self.comboBox_liter_IC.objectName())
-        #
-        # # comboBox_digit_IC
-        # self.comboBox_digit_IC = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_digit_IC.setObjectName('comboBox_digit_IC')
-        # self.comboBox_digit_IC.setGeometry(PyQt5.QtCore.QRect(110, 70, 70, 20))
-        # self.comboBox_digit_IC.addItem('пусто')
-        # self.comboBox_digit_IC.setEnabled(False)
-        # self.comboBox_digit_IC.adjustSize()
-        # self.comboBox_digit_IC.setToolTip(self.comboBox_digit_IC.objectName())
-        #
-        # # checkBox_prest_IC
-        # self.checkBox_prest_IC = PyQt5.QtWidgets.QCheckBox(self)
-        # self.checkBox_prest_IC.setObjectName('checkBox_prest_IC')
-        # self.checkBox_prest_IC.setGeometry(PyQt5.QtCore.QRect(215, 70, 20, 20))
-        # self.checkBox_prest_IC.setText('с преступлениями в колонке: ')
-        # self.checkBox_prest_IC.setEnabled(False)
-        # self.checkBox_prest_IC.adjustSize()
-        # self.checkBox_prest_IC.clicked.connect(self.click_on_checkbox_prest)
-        # self.checkBox_prest_IC.setToolTip(self.checkBox_prest_IC.objectName())
-        #
-        # # comboBox_liter_prest_IC
-        # self.comboBox_liter_prest_IC = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_liter_prest_IC.setObjectName('comboBox_liter_prest_IC')
-        # self.comboBox_liter_prest_IC.setGeometry(PyQt5.QtCore.QRect(390, 70, 70, 20))
-        # self.comboBox_liter_prest_IC.addItem('пусто')
-        # self.comboBox_liter_prest_IC.setEnabled(False)
-        # self.comboBox_liter_prest_IC.setVisible(False)
-        # self.comboBox_liter_prest_IC.adjustSize()
-        # self.comboBox_liter_prest_IC.setToolTip(self.comboBox_liter_prest_IC.objectName())
-
         # label_half_file
         self.label_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_half_file.setObjectName('label_half_file')
@@ -141,24 +103,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.toolButton_select_half_file.setFixedWidth(50)
         self.toolButton_select_half_file.clicked.connect(self.select_file)
         self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
-
-        # # comboBox_liter_GASPS
-        # self.comboBox_liter_GASPS = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_liter_GASPS.setObjectName('comboBox_liter_GASPS')
-        # self.comboBox_liter_GASPS.setGeometry(PyQt5.QtCore.QRect(10, 180, 70, 20))
-        # self.comboBox_liter_GASPS.addItem('пусто')
-        # self.comboBox_liter_GASPS.setEnabled(False)
-        # self.comboBox_liter_GASPS.adjustSize()
-        # self.comboBox_liter_GASPS.setToolTip(self.comboBox_liter_GASPS.objectName())
-        #
-        # # comboBox_digit_GASPS
-        # self.comboBox_digit_GASPS = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_digit_GASPS.setObjectName('comboBox_digit_GASPS')
-        # self.comboBox_digit_GASPS.setGeometry(PyQt5.QtCore.QRect(110, 180, 70, 20))
-        # self.comboBox_digit_GASPS.addItem('пусто')
-        # self.comboBox_digit_GASPS.setEnabled(False)
-        # self.comboBox_digit_GASPS.adjustSize()
-        # self.comboBox_digit_GASPS.setToolTip(self.comboBox_digit_GASPS.objectName())
 
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
@@ -200,17 +144,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         file_name = data_of_open_file_name[0]
 
         # выбор где и что менять исходя из выбора пользователя
-        # нажата кнопка выбора ИЦ
+        # нажата кнопка выбора полного файла
         if self.sender().objectName() == self.toolButton_select_full_file.objectName():
             if file_name == '':
-                self.label_path_full_file.setText(old_path_of_selected_file_IC)
+                self.label_path_full_file.setText(old_path_of_selected_full_file)
                 self.label_path_full_file.adjustSize()
             else:
                 old_path_of_selected_full_file = self.label_path_full_file.text()
                 self.label_path_full_file.setText(file_name)
                 self.label_path_full_file.adjustSize()
 
-        # нажата кнопка выбора ГАСПС
+        # нажата кнопка выбора неполного файла
         if self.sender().objectName() == self.toolButton_select_half_file.objectName():
             if file_name == '':
                 self.label_path_half_file.setText(old_path_of_selected_half_file)
@@ -223,101 +167,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # активация и деактивация объектов на форме зависящее от выбраны ли все файлы и они разные
         if self.label_path_full_file.text() != self.label_path_half_file.text():
             if self.text_empty_path_file not in (self.label_path_full_file.text(), self.label_path_half_file.text()):
-                self.comboBox_liter_IC.setEnabled(True)
-                self.comboBox_digit_IC.setEnabled(True)
-
-                self.checkBox_prest_IC.setEnabled(True)
-                self.comboBox_liter_prest_IC.setEnabled(True)
-
-                self.comboBox_liter_GASPS.setEnabled(True)
-                self.comboBox_digit_GASPS.setEnabled(True)
-                self.do_fill_comboboxes()
-
                 self.flag_edit_prest = None
         else:
-            self.comboBox_liter_IC.setEnabled(False)
-            self.comboBox_digit_IC.setEnabled(False)
-
-            self.checkBox_prest_IC.setEnabled(False)
-            self.comboBox_liter_prest_IC.setEnabled(False)
-
-            self.comboBox_liter_GASPS.setEnabled(False)
-            self.comboBox_digit_GASPS.setEnabled(False)
-
             self.flag_edit_prest = None
-
-    # # заполнение комбобоксов
-    # def do_fill_comboboxes(self):
-    #     # присвоение файлов
-    #     self.file_IC = self.label_path_full_file.text()
-    #     self.file_GASPS = self.label_path_half_file.text()
-    #
-    #     # открывается файл "приёмник", назначается активный лист, выбирается диапазон ячеек
-    #     self.wb_file_IC = openpyxl.load_workbook(self.file_IC)
-    #     self.wb_file_IC_s = self.wb_file_IC.active
-    #     self.wb_file_GASPS = openpyxl.load_workbook(self.file_GASPS)
-    #     self.wb_file_GASPS_s = self.wb_file_GASPS.active
-    #
-    #     # вычисление максимальных строк и колонок в выбранных файлах
-    #     max_row_IC = self.wb_file_IC_s.max_row
-    #     max_col_IC = self.wb_file_IC_s.max_column
-    #     max_row_GASPS = self.wb_file_GASPS_s.max_row
-    #     max_col_GASPS = self.wb_file_GASPS_s.max_column
-    #
-    #     # очистка комбобоксов и заполнение их буквами колонок и числами строк из файлов
-    #     self.comboBox_liter_IC.clear()
-    #     self.comboBox_liter_IC.addItem(self.text_empty_combobox)
-    #     self.comboBox_liter_IC.adjustSize()
-    #     for col_IC in range(1, max_col_IC + 1):
-    #         self.comboBox_liter_IC.addItem(
-    #             openpyxl.utils.cell.coordinate_from_string(self.wb_file_IC_s.cell(1, col_IC).coordinate)[0]
-    #             )
-    #
-    #     self.comboBox_liter_prest_IC.clear()
-    #     self.comboBox_liter_prest_IC.addItem(self.text_empty_combobox)
-    #     self.comboBox_liter_prest_IC.adjustSize()
-    #     for col_IC in range(1, max_col_IC + 1):
-    #         self.comboBox_liter_prest_IC.addItem(
-    #             openpyxl.utils.cell.coordinate_from_string(self.wb_file_IC_s.cell(1, col_IC).coordinate)[0]
-    #             )
-    #
-    #     self.comboBox_digit_IC.clear()
-    #     self.comboBox_digit_IC.addItem(self.text_empty_combobox)
-    #     self.comboBox_digit_IC.adjustSize()
-    #     for row_IC in range(1, max_row_IC + 1):
-    #         self.comboBox_digit_IC.addItem(str(row_IC))
-    #
-    #     self.comboBox_liter_GASPS.clear()
-    #     self.comboBox_liter_GASPS.addItem(self.text_empty_combobox)
-    #     self.comboBox_liter_GASPS.adjustSize()
-    #     for col_GASPS in range(1, max_col_GASPS + 1):
-    #         self.comboBox_liter_GASPS.addItem(
-    #             openpyxl.utils.cell.coordinate_from_string(self.wb_file_GASPS_s.cell(1, col_GASPS).coordinate)[0]
-    #             )
-    #
-    #     self.comboBox_digit_GASPS.clear()
-    #     self.comboBox_digit_GASPS.addItem(self.text_empty_combobox)
-    #     self.comboBox_digit_GASPS.adjustSize()
-    #     for row_GASPS in range(1, max_row_GASPS + 1):
-    #         self.comboBox_digit_GASPS.addItem(str(row_GASPS))
-    #
-    #     self.pushButton_do_fill_data.setEnabled(True)
-    #
-    # # событие - нажатие на чекбокс
-    # def click_on_checkbox_prest(self):
-    #     if self.checkBox_prest_IC.isChecked():
-    #         # включение комбо
-    #         self.comboBox_liter_prest_IC.setEnabled(True)
-    #         self.comboBox_liter_prest_IC.setVisible(True)
-    #         self.comboBox_liter_prest_IC.adjustSize()
-    #         self.comboBox_liter_prest_IC.setCurrentIndex(0)
-    #         self.flag_edit_prest = None
-    #     else:
-    #         # выключение комбо
-    #         self.comboBox_liter_prest_IC.setEnabled(False)
-    #         self.comboBox_liter_prest_IC.setVisible(False)
-    #         self.comboBox_liter_prest_IC.adjustSize()
-    #         self.flag_edit_prest = False
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
