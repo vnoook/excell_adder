@@ -12,9 +12,9 @@ import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-import openpyxl
-import openpyxl.utils
-import openpyxl.styles
+# import openpyxl
+# import openpyxl.utils
+# import openpyxl.styles
 
 
 # класс главного окна
