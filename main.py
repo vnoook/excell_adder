@@ -179,59 +179,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         set_data_full_file = set()
         set_data_half_file = set()
 
-        # # проверяю чекбокс "с преступлениями" и другими условиями
-        # if self.checkBox_prest_IC.checkState() == 2 and\
-        #         (self.comboBox_liter_prest_IC.itemText(self.comboBox_liter_prest_IC.currentIndex()) not in
-        #          (self.text_empty_combobox, self.comboBox_liter_IC.itemText(
-        #              self.comboBox_liter_IC.currentIndex()))):
-        #     self.flag_edit_prest = True
-        #
-        # elif (self.checkBox_prest_IC.checkState() == 2) and\
-        #         (self.comboBox_liter_prest_IC.itemText(
-        #             self.comboBox_liter_prest_IC.currentIndex()) == self.text_empty_combobox):
-        #     # информационное окно о предупреждении выбора полей
-        #     self.window_select = PyQt5.QtWidgets.QMessageBox()
-        #     self.window_select.setWindowTitle('Поля')
-        #     self.window_select.setText(f'Выберите пустые поля или уберите галочку "с преступлениями"')
-        #     self.window_select.exec_()
-        #     self.flag_edit_prest = False
-        #
-        # elif (self.checkBox_prest_IC.checkState() == 2) and\
-        #         (self.comboBox_liter_prest_IC.itemText(self.comboBox_liter_prest_IC.currentIndex()) ==
-        #          self.comboBox_liter_IC.itemText(self.comboBox_liter_IC.currentIndex())):
-        #     # информационное окно о сравнении значений двух комбо
-        #     self.window_select = PyQt5.QtWidgets.QMessageBox()
-        #     self.window_select.setWindowTitle('Сравнение')
-        #     self.window_select.setText(f'Поля в строке ИЦ не должны совпадать')
-        #     self.window_select.exec_()
-        #     self.flag_edit_prest = False
-        # else:
-        #     self.flag_edit_prest = False
-        #
-        # # формируются диапазоны для обработки данных в файлах из комбобоксов
-        # range_file_IC = self.comboBox_liter_IC.itemText(self.comboBox_liter_IC.currentIndex()) +\
-        #                 self.comboBox_digit_IC.itemText(self.comboBox_digit_IC.currentIndex()) +\
-        #                 ':' +\
-        #                 self.comboBox_liter_IC.itemText(self.comboBox_liter_IC.currentIndex()) +\
-        #                 self.comboBox_digit_IC.itemText(self.comboBox_digit_IC.count()-1)
-        #
-        # range_file_GASPS = self.comboBox_liter_GASPS.itemText(self.comboBox_liter_GASPS.currentIndex()) +\
-        #                    self.comboBox_digit_GASPS.itemText(self.comboBox_digit_GASPS.currentIndex()) +\
-        #                    ':' +\
-        #                    self.comboBox_liter_GASPS.itemText(self.comboBox_liter_GASPS.currentIndex()) +\
-        #                    self.comboBox_digit_GASPS.itemText(self.comboBox_digit_GASPS.count()-1)
-        #
-        # if self.flag_edit_prest:
-        #     # формируется диапазон для обработки колонки преступлений
-        #     range_file_IC_prest = self.comboBox_liter_prest_IC.itemText(
-        #         self.comboBox_liter_prest_IC.currentIndex()) + \
-        #                           self.comboBox_digit_IC.itemText(self.comboBox_digit_IC.currentIndex()) + \
-        #                           ':' + \
-        #                           self.comboBox_liter_prest_IC.itemText(
-        #                               self.comboBox_liter_prest_IC.currentIndex()) + \
-        #                           self.comboBox_digit_IC.itemText(self.comboBox_digit_IC.count() - 1)
-        #     wb_IC_cells_range_prest = self.wb_file_IC_s[range_file_IC_prest]
-        #
         # # сформированные диапазоны из выбранных комбобоксов
         # wb_IC_cells_range = self.wb_file_IC_s[range_file_IC]
         # wb_GASPS_cells_range = self.wb_file_GASPS_s[range_file_GASPS]
