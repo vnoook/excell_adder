@@ -103,6 +103,28 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.toolButton_select_half_file.clicked.connect(self.select_file)
         self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
 
+
+
+
+
+        # comboBox_specialization
+        self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
+        self.comboBox_specialization.setObjectName('comboBox_specialization')
+        self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 180, 70, 20))
+        self.comboBox_specialization.addItem('пусто')
+        self.comboBox_specialization.setEnabled(True)
+        self.comboBox_specialization.setVisible(True)
+        self.comboBox_specialization.adjustSize()
+        self.comboBox_specialization.setToolTip(self.comboBox_specialization.objectName())
+        self.comboBox_specialization = PyQt5.QtWidgets.QLabel(self)
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.comboBox_specialization.setFont(font)
+
+
+
+
+
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
         self.pushButton_do_fill_data.setObjectName('pushButton_do_fill_data')
