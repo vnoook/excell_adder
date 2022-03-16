@@ -12,9 +12,9 @@ import PyQt5
 import PyQt5.QtWidgets
 import PyQt5.QtCore
 import PyQt5.QtGui
-# import openpyxl
-# import openpyxl.utils
-# import openpyxl.styles
+import openpyxl
+import openpyxl.utils
+import openpyxl.styles
 
 
 # класс главного окна
@@ -28,13 +28,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.info_path_open_file = ''
         self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
         self.text_empty_path_file = 'файл пока не выбран'
+
         # self.text_empty_combobox = 'не выбрано'
-        # self.file_IC = ''
-        # self.file_GASPS = ''
-        # self.wb_file_IC = ''
-        # self.wb_file_IC_s = ''
-        # self.wb_file_GASPS = ''
-        # self.wb_file_GASPS_s = ''
+        self.file_full = ''
+        self.file_half = ''
+
+        self.wb_fullfile = ''
+        self.wb_fullfile_s = ''
+        self.wb_halffile = ''
+        self.wb_halffile_s = ''
+
+        self.spec_list = ('111', '222', '333', '444', '555', '666', '777', '888', '999', '000')
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -192,6 +196,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         else:
             self.pushButton_do_fill_data.setEnabled(False)
 
+        # print(f'{self.label_path_full_file.text() = }')
+        # print(f'{self.label_path_half_file.text() = }')
+
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
         # считаю время заполнения
@@ -201,8 +208,27 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         set_data_full_file = set()
         set_data_half_file = set()
 
-        # 1) открыть файлы Полный и НЕПолный
-        # 2) выбрать листы
+        # определение переменных связанных с файлами
+        self.file_full = self.label_path_full_file.text()
+        self.file_half = self.label_path_half_file.text()
+        print(f'{self.file_full = }')
+        print(f'{self.file_half = }')
+        print('*'*30)
+
+        # открыть файлы Полный и НЕПолный, и выбрать листы
+        wb_full = openpyxl.load_workbook(self.file_full)
+        wb_full_s = wb_full.active
+        wb_half = openpyxl.load_workbook(self.file_half)
+        wb_half_s = wb_half.active
+        print('*' * 30)
+
+        print(self.spec_list)
+        print(f'{wb_full = }')
+        print(f'{wb_full_s = }')
+        print(f'{wb_half = }')
+        print(f'{wb_half_s = }')
+        print('*'*30)
+
         # 3) выбрать колонки ИЛИ диапазон ячеек
         #
         # 4.1) взять строку из Полного
