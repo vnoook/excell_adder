@@ -28,17 +28,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.info_path_open_file = ''
         self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
         self.text_empty_path_file = 'файл пока не выбран'
-
-        # self.text_empty_combobox = 'не выбрано'
         self.file_full = ''
         self.file_half = ''
 
-        self.wb_fullfile = ''
-        self.wb_fullfile_s = ''
-        self.wb_halffile = ''
-        self.wb_halffile_s = ''
-
+        self.max_string = 1000
         self.spec_list = ('111', '222', '333', '444', '555', '666', '777', '888', '999', '000')
+        self.range_full_file = 'A2:J11501'
+        self.range_half_file = 'A2:J256'
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -80,7 +76,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_half_file.setObjectName('label_half_file')
         self.label_half_file.setText('2. Выберите неполный файл')
-        self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 120, 150, 40))
+        self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 80, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
         self.label_half_file.setFont(font)
@@ -91,7 +87,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_path_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_path_half_file.setObjectName('label_path_half_file')
         self.label_path_half_file.setText(self.text_empty_path_file)
-        self.label_path_half_file.setGeometry(PyQt5.QtCore.QRect(70, 150, 820, 20))
+        self.label_path_half_file.setGeometry(PyQt5.QtCore.QRect(70, 110, 820, 20))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(10)
         self.label_path_half_file.setFont(font)
@@ -102,32 +98,27 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.toolButton_select_half_file = PyQt5.QtWidgets.QPushButton(self)
         self.toolButton_select_half_file.setObjectName('toolButton_select_half_file')
         self.toolButton_select_half_file.setText('...')
-        self.toolButton_select_half_file.setGeometry(PyQt5.QtCore.QRect(10, 150, 50, 20))
+        self.toolButton_select_half_file.setGeometry(PyQt5.QtCore.QRect(10, 110, 50, 20))
         self.toolButton_select_half_file.setFixedWidth(50)
         self.toolButton_select_half_file.clicked.connect(self.select_file)
         self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
 
+        # TODO
+        # сделать ввод числа и ввод строки поиска через пробел
 
-
-
-
-        # comboBox_specialization
-        self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
-        self.comboBox_specialization.setObjectName('comboBox_specialization')
-        self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 180, 70, 20))
-        self.comboBox_specialization.addItem('пусто')
-        self.comboBox_specialization.setEnabled(True)
-        self.comboBox_specialization.setVisible(True)
-        self.comboBox_specialization.adjustSize()
-        self.comboBox_specialization.setToolTip(self.comboBox_specialization.objectName())
-        self.comboBox_specialization = PyQt5.QtWidgets.QLabel(self)
-        font = PyQt5.QtGui.QFont()
-        font.setPointSize(12)
-        self.comboBox_specialization.setFont(font)
-
-
-
-
+        # # comboBox_specialization
+        # self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
+        # self.comboBox_specialization.setObjectName('comboBox_specialization')
+        # self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 180, 70, 20))
+        # self.comboBox_specialization.addItem('пусто')
+        # self.comboBox_specialization.setEnabled(True)
+        # self.comboBox_specialization.setVisible(True)
+        # self.comboBox_specialization.adjustSize()
+        # self.comboBox_specialization.setToolTip(self.comboBox_specialization.objectName())
+        # self.comboBox_specialization = PyQt5.QtWidgets.QLabel(self)
+        # font = PyQt5.QtGui.QFont()
+        # font.setPointSize(12)
+        # self.comboBox_specialization.setFont(font)
 
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
@@ -201,36 +192,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
-        # считаю время заполнения
-        time_start = time.time()
-
-        # определение множеств
-        set_data_full_file = set()
-        set_data_half_file = set()
-
-        # определение переменных связанных с файлами
-        self.file_full = self.label_path_full_file.text()
-        self.file_half = self.label_path_half_file.text()
-        print(f'{self.file_full = }')
-        print(f'{self.file_half = }')
-        print('*'*30)
-
-        # открыть файлы Полный и НЕПолный, и выбрать листы
-        wb_full = openpyxl.load_workbook(self.file_full)
-        wb_full_s = wb_full.active
-        wb_half = openpyxl.load_workbook(self.file_half)
-        wb_half_s = wb_half.active
-        print('*' * 30)
-
-        print(self.spec_list)
-        print(f'{wb_full = }')
-        print(f'{wb_full_s = }')
-        print(f'{wb_half = }')
-        print(f'{wb_half_s = }')
-        print('*'*30)
-
-        # 3) выбрать колонки ИЛИ диапазон ячеек
-        #
+        # TODO
         # 4.1) взять строку из Полного
         # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
         # 6.1) вставить в НЕПолный или взять новую
@@ -240,91 +202,107 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # 6.2) вычесть из Полных все строки из НЕПолного файла
         # 7.2) из полученного множества случайным образом брать строки для добавляения в НЕПолный
 
+        # считаю время заполнения
+        time_start = time.time()
 
+        # определение множеств
+        set_data_full_file = set()
+        set_data_half_file = set()
 
+        print(f'специальности {self.spec_list = }')
 
+        # открыть файлы Полный и НЕПолный, и выбрать листы
+        wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
+        wb_full_s = wb_full.active
+        wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
+        wb_half_s = wb_half.active
+        # print(f'{wb_full = }')
+        # print(f'{wb_full_s = }')
+        # print(f'{wb_half = }')
+        # print(f'{wb_half_s = }')
+        # print('*'*30)
 
-        # # сформированные диапазоны из выбранных комбобоксов
-        # wb_IC_cells_range = self.wb_file_IC_s[range_file_IC]
-        # wb_GASPS_cells_range = self.wb_file_GASPS_s[range_file_GASPS]
+        # сформированные диапазоны
+        wb_full_range = wb_full_s[self.range_full_file]
+        wb_half_range = wb_half_s[self.range_half_file]
+        # print(f'{wb_full_range = }')
+        # print(f'{wb_half_range = }')
+
+        for row_in_range_full in wb_full_range:
+            print()
+            for cell_in_row_full in row_in_range_full:
+                print(cell_in_row_full.value, end=' ')
+                # TODO
+
+                # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
+                #     wb_GASPS_cell_value = 'None'
+                # else:
+                #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
+                #
+                # for ikud in wb_GASPS_cell_value.split(";"):
+                #     set_data_GASPS.add(ikud.strip().replace('.', ''))
+                #
+                # tuple_data_GASPS = tuple(set_data_GASPS)
+
+        # # обработка файла ИЦ
+        # for row_in_range_IC in wb_IC_cells_range:
+        #     for cell_in_row_IC in row_in_range_IC:
+        #         # определение адреса ячейки из области данных
+        #         indexR_IC = wb_IC_cells_range.index(row_in_range_IC)
+        #         indexC_IC = row_in_range_IC.index(cell_in_row_IC)
         #
-        # if (self.checkBox_prest_IC.checkState() == 0) or\
-        #         (self.checkBox_prest_IC.checkState() == 2 and self.flag_edit_prest):
-        #     # формирование множества из обработанных значений ячеек GASPS
-        #     for row_in_range_GASPS in wb_GASPS_cells_range:
-        #         for cell_in_row_GASPS in row_in_range_GASPS:
-        #             indexR_GASPS = wb_GASPS_cells_range.index(row_in_range_GASPS)
-        #             indexC_GASPS = row_in_range_GASPS.index(cell_in_row_GASPS)
+        #         # получение координаты и значения ячейки IC
+        #         if wb_IC_cells_range[indexR_IC][indexC_IC].value == None:
+        #             wb_IC_cell_value = 'None'
+        #         else:
+        #             wb_IC_cell_value = str(wb_IC_cells_range[indexR_IC][indexC_IC].value)
         #
-        #             if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
-        #                 wb_GASPS_cell_value = 'None'
-        #             else:
-        #                 wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
+        #         # очистка множества для номеров дел из колонки и
+        #         # разбивка строки на несколько номеров дел если есть ";"
+        #         set_data_IC.clear()
+        #         for ikud in wb_IC_cell_value.split(";"):
+        #             set_data_IC.add(ikud.strip().replace('.', ''))
         #
-        #             for ikud in wb_GASPS_cell_value.split(";"):
-        #                 set_data_GASPS.add(ikud.strip().replace('.', ''))
+        #         tuple_data_IC = tuple(set_data_IC)
         #
-        #             tuple_data_GASPS = tuple(set_data_GASPS)
+        #         # раскраска колонок УД в ИЦ файле
+        #         for ikud in wb_IC_cell_value.split(";"):
+        #             ikud_split = ikud.strip().replace('.', '').replace(' ', '')
         #
-        #     # обработка файла ИЦ
-        #     for row_in_range_IC in wb_IC_cells_range:
-        #         for cell_in_row_IC in row_in_range_IC:
-        #             # определение адреса ячейки из области данных
-        #             indexR_IC = wb_IC_cells_range.index(row_in_range_IC)
-        #             indexC_IC = row_in_range_IC.index(cell_in_row_IC)
+        #             if (ikud_split in tuple_data_GASPS) and (ikud_split in tuple_data_IC):
+        #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
+        #                     openpyxl.styles.PatternFill(start_color='FF0000', end_color='FF0000',
+        #                                                 fill_type='solid')
+        #             elif ikud_split not in tuple_data_GASPS:
+        #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
+        #                     openpyxl.styles.PatternFill(start_color='878787', end_color='878787',
+        #                                                 fill_type='solid')
         #
-        #             # получение координаты и значения ячейки IC
-        #             if wb_IC_cells_range[indexR_IC][indexC_IC].value == None:
-        #                 wb_IC_cell_value = 'None'
-        #             else:
-        #                 wb_IC_cell_value = str(wb_IC_cells_range[indexR_IC][indexC_IC].value)
+        #             # обработка колонки преступности - добавляется номер УД к номеру преступления
+        #             if self.flag_edit_prest:
+        #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
+        #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
         #
-        #             # очистка множества для номеров дел из колонки и
-        #             # разбивка строки на несколько номеров дел если есть ";"
-        #             set_data_IC.clear()
-        #             for ikud in wb_IC_cell_value.split(";"):
-        #                 set_data_IC.add(ikud.strip().replace('.', ''))
+        # # сохраняю файл и закрываю оба
+        # self.wb_file_IC.save(self.file_IC)
+        # self.wb_file_IC.close()
+        # self.wb_file_GASPS.close()
         #
-        #             tuple_data_IC = tuple(set_data_IC)
+        # # считаю время заполнения
+        # time_finish = time.time()
+        # '\n' + '.' * 30 + 'закончено за', round(time_finish - time_start, 1), 'секунд'
         #
-        #             # раскраска колонок УД в ИЦ файле
-        #             for ikud in wb_IC_cell_value.split(";"):
-        #                 ikud_split = ikud.strip().replace('.', '').replace(' ', '')
+        # # информационное окно о сохранении файлов
+        # self.window_info = PyQt5.QtWidgets.QMessageBox()
+        # self.window_info.setWindowTitle('Файлы')
+        # self.window_info.setText(f'Файлы сохранены и закрыты.\n{self.file_IC}\n'
+        #                          f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
+        # self.window_info.exec_()
         #
-        #                 if (ikud_split in tuple_data_GASPS) and (ikud_split in tuple_data_IC):
-        #                     wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-        #                         openpyxl.styles.PatternFill(start_color='FF0000', end_color='FF0000',
-        #                                                     fill_type='solid')
-        #                 elif ikud_split not in tuple_data_GASPS:
-        #                     wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-        #                         openpyxl.styles.PatternFill(start_color='878787', end_color='878787',
-        #                                                     fill_type='solid')
-        #
-        #                 # обработка колонки преступности - добавляется номер УД к номеру преступления
-        #                 if self.flag_edit_prest:
-        #                     wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
-        #                         ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
-        #
-        #     # сохраняю файл и закрываю оба
-        #     self.wb_file_IC.save(self.file_IC)
-        #     self.wb_file_IC.close()
-        #     self.wb_file_GASPS.close()
-        #
-        #     # считаю время заполнения
-        #     time_finish = time.time()
-        #     '\n' + '.' * 30 + 'закончено за', round(time_finish - time_start, 1), 'секунд'
-        #
-        #     # информационное окно о сохранении файлов
-        #     self.window_info = PyQt5.QtWidgets.QMessageBox()
-        #     self.window_info.setWindowTitle('Файлы')
-        #     self.window_info.setText(f'Файлы сохранены и закрыты.\n{self.file_IC}\n'
-        #                              f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
-        #     self.window_info.exec_()
-        #
-        #     # очистка переменных от повторного использования
-        #     del set_data_IC
-        #     del set_data_GASPS
-        #     self.flag_edit_prest = None
+        # # очистка переменных от повторного использования
+        # del set_data_IC
+        # del set_data_GASPS
+        # self.flag_edit_prest = None
 
     # событие - нажатие на кнопку Выход
     def click_on_btn_exit(self):
