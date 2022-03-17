@@ -14,7 +14,6 @@ import PyQt5.QtCore
 import PyQt5.QtGui
 import openpyxl
 import openpyxl.utils
-import openpyxl.styles
 
 
 # класс главного окна
@@ -30,7 +29,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-
         self.max_string = 1000
         self.spec_list = ('111', '222', '333', '444', '555', '666', '777', '888', '999', '000')
         self.range_full_file = 'A2:J11501'
@@ -38,7 +36,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
-        self.setGeometry(600, 400, 900, 300)
+        self.setGeometry(600, 300, 900, 340)
 
         # объекты на главном окне
         # label_full_file
@@ -76,40 +74,75 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_half_file.setObjectName('label_half_file')
         self.label_half_file.setText('2. Выберите неполный файл')
-        self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 80, 150, 40))
+        self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 70, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
         self.label_half_file.setFont(font)
         self.label_half_file.adjustSize()
         self.label_half_file.setToolTip(self.label_half_file.objectName())
 
+        # toolButton_select_half_file
+        self.toolButton_select_half_file = PyQt5.QtWidgets.QPushButton(self)
+        self.toolButton_select_half_file.setObjectName('toolButton_select_half_file')
+        self.toolButton_select_half_file.setText('...')
+        self.toolButton_select_half_file.setGeometry(PyQt5.QtCore.QRect(10, 100, 50, 20))
+        self.toolButton_select_half_file.setFixedWidth(50)
+        self.toolButton_select_half_file.clicked.connect(self.select_file)
+        self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
+
         # label_path_half_file
         self.label_path_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_path_half_file.setObjectName('label_path_half_file')
         self.label_path_half_file.setText(self.text_empty_path_file)
-        self.label_path_half_file.setGeometry(PyQt5.QtCore.QRect(70, 110, 820, 20))
+        self.label_path_half_file.setGeometry(PyQt5.QtCore.QRect(70, 100, 820, 20))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(10)
         self.label_path_half_file.setFont(font)
         self.label_path_half_file.adjustSize()
         self.label_path_half_file.setToolTip(self.label_path_half_file.objectName())
 
-        # toolButton_select_half_file
-        self.toolButton_select_half_file = PyQt5.QtWidgets.QPushButton(self)
-        self.toolButton_select_half_file.setObjectName('toolButton_select_half_file')
-        self.toolButton_select_half_file.setText('...')
-        self.toolButton_select_half_file.setGeometry(PyQt5.QtCore.QRect(10, 110, 50, 20))
-        self.toolButton_select_half_file.setFixedWidth(50)
-        self.toolButton_select_half_file.clicked.connect(self.select_file)
-        self.toolButton_select_half_file.setToolTip(self.toolButton_select_half_file.objectName())
+        # label_max_string
+        self.label_max_string = PyQt5.QtWidgets.QLabel(self)
+        self.label_max_string.setObjectName('label_max_string')
+        self.label_max_string.setText('3. Сколько добавить строк в файл')
+        self.label_max_string.setGeometry(PyQt5.QtCore.QRect(10, 130, 150, 40))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.label_max_string.setFont(font)
+        self.label_max_string.adjustSize()
+        self.label_max_string.setToolTip(self.label_max_string.objectName())
 
-        # TODO
-        # сделать ввод числа и ввод строки поиска через пробел
+        # lineEdit_max_string
+        self.lineEdit_max_string = PyQt5.QtWidgets.QLineEdit(self)
+        self.lineEdit_max_string.setObjectName('lineEdit_max_string')
+        self.lineEdit_max_string.setText('')
+        self.lineEdit_max_string.setGeometry(PyQt5.QtCore.QRect(10, 160, 90, 20))
+        self.lineEdit_max_string.setClearButtonEnabled(True)
+        self.lineEdit_max_string.setToolTip(self.lineEdit_max_string.objectName())
+
+        # label_spec_string
+        self.label_spec_string = PyQt5.QtWidgets.QLabel(self)
+        self.label_spec_string.setObjectName('label_spec_string')
+        self.label_spec_string.setText('4. Введите специализации через запятую')
+        self.label_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 190, 150, 40))
+        font = PyQt5.QtGui.QFont()
+        font.setPointSize(12)
+        self.label_spec_string.setFont(font)
+        self.label_spec_string.adjustSize()
+        self.label_spec_string.setToolTip(self.label_spec_string.objectName())
+
+        # lineEdit_spec_string
+        self.lineEdit_spec_string = PyQt5.QtWidgets.QLineEdit(self)
+        self.lineEdit_spec_string.setObjectName('lineEdit_spec_string')
+        self.lineEdit_spec_string.setText('')
+        self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 300, 20))
+        self.lineEdit_spec_string.setClearButtonEnabled(True)
+        self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
 
         # # comboBox_specialization
         # self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
         # self.comboBox_specialization.setObjectName('comboBox_specialization')
-        # self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 180, 70, 20))
+        # self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 350, 70, 20))
         # self.comboBox_specialization.addItem('пусто')
         # self.comboBox_specialization.setEnabled(True)
         # self.comboBox_specialization.setVisible(True)
@@ -125,7 +158,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.pushButton_do_fill_data.setObjectName('pushButton_do_fill_data')
         self.pushButton_do_fill_data.setEnabled(False)
         self.pushButton_do_fill_data.setText('Произвести заполнение')
-        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 225, 180, 25))
+        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 260, 180, 25))
         self.pushButton_do_fill_data.setFixedWidth(130)
         self.pushButton_do_fill_data.clicked.connect(self.do_fill_data)
         self.pushButton_do_fill_data.setToolTip(self.pushButton_do_fill_data.objectName())
@@ -134,7 +167,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.button_exit = PyQt5.QtWidgets.QPushButton(self)
         self.button_exit.setObjectName('button_exit')
         self.button_exit.setText('Выход')
-        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 260, 180, 25))
+        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 300, 180, 25))
         self.button_exit.setFixedWidth(50)
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
