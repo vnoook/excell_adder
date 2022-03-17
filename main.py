@@ -220,9 +220,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         else:
             self.pushButton_do_fill_data.setEnabled(False)
 
-        # print(f'{self.label_path_full_file.text() = }')
-        # print(f'{self.label_path_half_file.text() = }')
-
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
         # считаю время заполнения
