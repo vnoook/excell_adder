@@ -225,16 +225,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
-        # TODO
-        # 4.1) взять строку из Полного
-        # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
-        # 6.1) вставить в НЕПолный или взять новую
-        #
-        # 4.2) взять все строки в Полном
-        # 5.2) взять все строки в НЕПолном,
-        # 6.2) вычесть из Полных все строки из НЕПолного файла
-        # 7.2) из полученного множества случайным образом брать строки для добавляения в НЕПолный
-
         # считаю время заполнения
         time_start = time.time()
 
@@ -249,18 +239,20 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         wb_full_s = wb_full.active
         wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
         wb_half_s = wb_half.active
-        # print(f'{wb_full = }')
-        # print(f'{wb_full_s = }')
-        # print(f'{wb_half = }')
-        # print(f'{wb_half_s = }')
-        # print('*'*30)
 
         # сформированные диапазоны
         wb_full_range = wb_full_s[self.range_full_file]
         wb_half_range = wb_half_s[self.range_half_file]
-        # print(f'{wb_full_range = }')
-        # print(f'{wb_half_range = }')
 
+        # TODO
+        # 4.1) взять строку из Полного
+        # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
+        # 6.1) вставить в НЕПолный или взять новую
+        #
+        # 4.2) взять все строки в Полном
+        # 5.2) взять все строки в НЕПолном,
+        # 6.2) вычесть из Полных все строки из НЕПолного файла
+        # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
         for row_in_range_full in wb_full_range:
             print()
             for cell_in_row_full in row_in_range_full:
