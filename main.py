@@ -139,6 +139,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_spec_string.setClearButtonEnabled(True)
         self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
 
+
+
         # # comboBox_specialization
         # self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
         # self.comboBox_specialization.setObjectName('comboBox_specialization')
@@ -146,12 +148,19 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.comboBox_specialization.addItem('пусто')
         # self.comboBox_specialization.setEnabled(True)
         # self.comboBox_specialization.setVisible(True)
+        #
+        # item = QListWidgetItem(cfg.get_description())
+        # item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
+        #
         # self.comboBox_specialization.adjustSize()
         # self.comboBox_specialization.setToolTip(self.comboBox_specialization.objectName())
         # self.comboBox_specialization = PyQt5.QtWidgets.QLabel(self)
         # font = PyQt5.QtGui.QFont()
         # font.setPointSize(12)
         # self.comboBox_specialization.setFont(font)
+
+
+
 
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
