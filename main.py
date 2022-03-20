@@ -299,8 +299,30 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 pass
             else:
                 # выбрать dif_string штук из list_sel_string
-                while flag_add_succes:
-                    pass
+                flag_add_succes = False
+                while flag_add_succes == False:
+                    # TODO
+
+                    flag_add_succes = True
+                else:
+                    # информационное окно о сохранении файлов
+                    self.window_info = PyQt5.QtWidgets.QMessageBox()
+                    self.window_info.setWindowTitle('Строки')
+                    self.window_info.setText(f'Не хватило данных для добавления,\n'
+                                             f'добавлено в файл сколько было.')
+                    self.window_info.exec_()
+
+
+
+
+
+
+
+
+
+
+
+
                     # TODO
                     # for add_string in range(dif_string):
                     #     random_string = random.choice(list_sel_string)
