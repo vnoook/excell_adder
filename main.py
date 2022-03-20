@@ -14,7 +14,7 @@ import PyQt5.QtCore
 import PyQt5.QtGui
 import openpyxl
 import openpyxl.utils
-
+import random
 
 # класс главного окна
 class Window(PyQt5.QtWidgets.QMainWindow):
@@ -34,7 +34,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
         self.range_full_file = 'A2:J11501'
-        self.range_half_file = 'A2:J256'
+        self.range_half_file = 'A2:J215'
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -242,30 +242,42 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
         wb_half_s = wb_half.active
 
-        # сформированные диапазоны
+        # сформированные диапазоны обработки
         wb_full_range = wb_full_s[self.range_full_file]
         wb_half_range = wb_half_s[self.range_half_file]
 
         # списки всех строк, одной строки прохода, выбранных строк по специальностям
-        list_all_string = []
-        list_one_string = []
-        list_sel_string = []
+        list_one_string = []  # временная переменная для значения ячейки
+        list_sel_string = []  # выбранные строки из которых брать в неполный файл
+        list_half_file = []  # весь неполный файл
 
         # цикл прохода по полному файлу
         for row_in_range_full in wb_full_range:
             # чищу список для временной строки
             list_one_string = []
+
             # прохожу строку
             for cell_in_row_full in row_in_range_full:
                 list_one_string.append(cell_in_row_full.value)
-
-            # добавляю строку в полный список
-            list_all_string.append(list_one_string)
 
             # если последнее значение в списке специальностей, то добавляю его в список выбранных
             if list_one_string[-1] in self.spec_list:
                 list_sel_string.append(list_one_string)
 
+        # цикл прохода по неполному файлу
+        for row_in_range_half in wb_half_range:
+            # чищу список для временной строки
+            list_one_string = []
+
+            # прохожу строку
+            for cell_in_row_half in row_in_range_half:
+                list_one_string.append(cell_in_row_half.value)
+
+            list_half_file.append(list_one_string)
+
+        for sel_string in list_half_file:
+
+            pass
 
 
 
