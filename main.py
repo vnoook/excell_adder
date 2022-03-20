@@ -29,7 +29,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = '225'
+        self.max_string = '220'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
@@ -299,12 +299,16 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 pass
             else:
                 # выбрать dif_string штук из list_sel_string
-                for add_string in range(dif_string):
-                    print(add_string, random.choice(list_sel_string))
-
-                    # if (sel_string[0]+sel_string[2]+sel_string[2]).lower() == 1111111111111:
-                    #     print(4444)
-                    #     pass
+                while flag_add_succes:
+                    pass
+                    # TODO
+                    # for add_string in range(dif_string):
+                    #     random_string = random.choice(list_sel_string)
+                    #     print(add_string, random_string[0], random_string[1], random_string[2])
+                    #
+                    #     if (sel_string[0]+sel_string[2]+sel_string[2]).lower() == 1111111111111:
+                    #         print(4444)
+                    #         pass
 
 
 
