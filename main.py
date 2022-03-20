@@ -29,8 +29,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = 1000
-        self.spec_list = ('111', '222', '333', '444', '555', '666', '777', '888', '999', '000')
+        self.max_string = '1000'
+        self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
+                            'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
+        self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
         self.range_full_file = 'A2:J11501'
         self.range_half_file = 'A2:J256'
 
@@ -115,7 +117,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # lineEdit_max_string
         self.lineEdit_max_string = PyQt5.QtWidgets.QLineEdit(self)
         self.lineEdit_max_string.setObjectName('lineEdit_max_string')
-        self.lineEdit_max_string.setText('')
+        self.lineEdit_max_string.setText(self.max_string)
         self.lineEdit_max_string.setGeometry(PyQt5.QtCore.QRect(10, 160, 90, 20))
         self.lineEdit_max_string.setClearButtonEnabled(True)
         self.lineEdit_max_string.setToolTip(self.lineEdit_max_string.objectName())
@@ -134,8 +136,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # lineEdit_spec_string
         self.lineEdit_spec_string = PyQt5.QtWidgets.QLineEdit(self)
         self.lineEdit_spec_string.setObjectName('lineEdit_spec_string')
-        self.lineEdit_spec_string.setText('')
-        self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 300, 20))
+        self.lineEdit_spec_string.setText(', '.join(self.spec_list))
+        self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 500, 20))
         self.lineEdit_spec_string.setClearButtonEnabled(True)
         self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
 
@@ -234,11 +236,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # считаю время заполнения
         time_start = time.time()
 
-        # определение множеств
-        set_data_full_file = set()
-        set_data_half_file = set()
-
-        print(f'специальности {self.spec_list = }')
+        # списки всех строк, одной строки прохода, выбранных строк по специальностям
+        list_all_string = []
+        list_one_string = []
+        list_sel_string = []
 
         # открыть файлы Полный и НЕПолный, и выбрать листы
         wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
@@ -259,21 +260,32 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # 5.2) взять все строки в НЕПолном,
         # 6.2) вычесть из Полных все строки из НЕПолного файла
         # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
-        for row_in_range_full in wb_full_range:
-            print()
-            for cell_in_row_full in row_in_range_full:
-                print(cell_in_row_full.value, end=' ')
-                # TODO
 
-                # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
-                #     wb_GASPS_cell_value = 'None'
-                # else:
-                #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
-                #
-                # for ikud in wb_GASPS_cell_value.split(";"):
-                #     set_data_GASPS.add(ikud.strip().replace('.', ''))
-                #
-                # tuple_data_GASPS = tuple(set_data_GASPS)
+        for row_in_range_full in wb_full_range:
+            for cell_in_row_full in row_in_range_full:
+                list_one_string.append(cell_in_row_full.value)
+
+            # добавляю строку в полный список
+            list_all_string.append(list_one_string)
+
+            # если последнее значение в списке специальностей, то добавляю его в список выбранных
+            if list_one_string[-1] in self.spec_list:
+                list_sel_string.append(list_one_string)
+
+            # чищу список для временной строки
+            list_one_string.clear()
+
+
+
+        # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
+        #     wb_GASPS_cell_value = 'None'
+        # else:
+        #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
+        #
+        # for ikud in wb_GASPS_cell_value.split(";"):
+        #     set_data_GASPS.add(ikud.strip().replace('.', ''))
+        #
+        # tuple_data_GASPS = tuple(set_data_GASPS)
 
         # # обработка файла ИЦ
         # for row_in_range_IC in wb_IC_cells_range:
@@ -319,21 +331,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.wb_file_IC.close()
         # self.wb_file_GASPS.close()
         #
-        # # считаю время заполнения
-        # time_finish = time.time()
-        # '\n' + '.' * 30 + 'закончено за', round(time_finish - time_start, 1), 'секунд'
-        #
-        # # информационное окно о сохранении файлов
-        # self.window_info = PyQt5.QtWidgets.QMessageBox()
-        # self.window_info.setWindowTitle('Файлы')
-        # self.window_info.setText(f'Файлы сохранены и закрыты.\n{self.file_IC}\n'
-        #                          f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
-        # self.window_info.exec_()
-        #
-        # # очистка переменных от повторного использования
-        # del set_data_IC
-        # del set_data_GASPS
-        # self.flag_edit_prest = None
+
+        # считаю время заполнения
+        time_finish = time.time()
+        '\n' + '.' * 30 + 'закончено за', round(time_finish - time_start, 1), 'секунд'
+
+        # информационное окно о сохранении файлов
+        self.window_info = PyQt5.QtWidgets.QMessageBox()
+        self.window_info.setWindowTitle('Файл')
+        self.window_info.setText(f'Файлы сохранены и закрыты.\n'
+                                 f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
+        self.window_info.exec_()
 
     # событие - нажатие на кнопку Выход
     def click_on_btn_exit(self):
