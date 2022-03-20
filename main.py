@@ -236,11 +236,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # считаю время заполнения
         time_start = time.time()
 
-        # списки всех строк, одной строки прохода, выбранных строк по специальностям
-        list_all_string = []
-        list_one_string = []
-        list_sel_string = []
-
         # открыть файлы Полный и НЕПолный, и выбрать листы
         wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
         wb_full_s = wb_full.active
@@ -250,6 +245,31 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # сформированные диапазоны
         wb_full_range = wb_full_s[self.range_full_file]
         wb_half_range = wb_half_s[self.range_half_file]
+
+        # списки всех строк, одной строки прохода, выбранных строк по специальностям
+        list_all_string = []
+        list_one_string = []
+        list_sel_string = []
+
+        # цикл прохода по полному файлу
+        for row_in_range_full in wb_full_range:
+            # чищу список для временной строки
+            list_one_string = []
+            # прохожу строку
+            for cell_in_row_full in row_in_range_full:
+                list_one_string.append(cell_in_row_full.value)
+
+            # добавляю строку в полный список
+            list_all_string.append(list_one_string)
+
+            # если последнее значение в списке специальностей, то добавляю его в список выбранных
+            if list_one_string[-1] in self.spec_list:
+                list_sel_string.append(list_one_string)
+
+
+
+
+
 
         # TODO
         # 4.1) взять строку из Полного
@@ -261,19 +281,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # 6.2) вычесть из Полных все строки из НЕПолного файла
         # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
 
-        for row_in_range_full in wb_full_range:
-            for cell_in_row_full in row_in_range_full:
-                list_one_string.append(cell_in_row_full.value)
 
-            # добавляю строку в полный список
-            list_all_string.append(list_one_string)
 
-            # если последнее значение в списке специальностей, то добавляю его в список выбранных
-            if list_one_string[-1] in self.spec_list:
-                list_sel_string.append(list_one_string)
 
-            # чищу список для временной строки
-            list_one_string.clear()
+
+
 
 
 
