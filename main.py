@@ -29,7 +29,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = '1000'
+        self.max_string = '225'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
@@ -106,7 +106,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # label_max_string
         self.label_max_string = PyQt5.QtWidgets.QLabel(self)
         self.label_max_string.setObjectName('label_max_string')
-        self.label_max_string.setText('3. Сколько добавить строк в файл')
+        self.label_max_string.setText('3. Сколько должно быть строк в файле')
         self.label_max_string.setGeometry(PyQt5.QtCore.QRect(10, 130, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -260,7 +260,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             for cell_in_row_full in row_in_range_full:
                 list_one_string.append(cell_in_row_full.value)
 
-            # если последнее значение в списке специальностей, то добавляю его в список выбранных
+            # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
             if list_one_string[-1] in self.spec_list:
                 list_sel_string.append(list_one_string)
 
@@ -273,11 +273,41 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             for cell_in_row_half in row_in_range_half:
                 list_one_string.append(cell_in_row_half.value)
 
+            # все записи из неполного файла
             list_half_file.append(list_one_string)
 
-        for sel_string in list_half_file:
+        # количество строк в неполном файле -1 потому что верхняя строка это шапка
+        count_string_half = wb_half_s.max_row -1
 
-            pass
+        # перевод значения в поле шага 3 в число "СКОЛЬКО ХОЧЕТСЯ СТРОК"
+        count_string_want = int(self.lineEdit_max_string.text())
+
+        # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
+        if count_string_half >= count_string_want:
+            # информационное окно о сохранении файлов
+            self.window_info = PyQt5.QtWidgets.QMessageBox()
+            self.window_info.setWindowTitle('Строки')
+            self.window_info.setText(f'Количество строк в неполном файле больше, чем в ПУНКТЕ 3')
+            self.window_info.exec_()
+        else:
+            # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
+            dif_string = count_string_want - count_string_half
+            # print(dif_string)
+
+            if dif_string > len(list_sel_string):
+                # добавляем всё что есть в list_sel_string
+                pass
+            else:
+                # выбрать dif_string штук из list_sel_string
+                for add_string in range(dif_string):
+                    print(add_string, random.choice(list_sel_string))
+
+                    # if (sel_string[0]+sel_string[2]+sel_string[2]).lower() == 1111111111111:
+                    #     print(4444)
+                    #     pass
+
+
+
 
 
 
