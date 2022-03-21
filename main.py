@@ -29,7 +29,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = '220'
+        self.max_string = '260'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
@@ -303,18 +303,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 # тут надо сделать кортеж из неполного файла для проверки
                 # вхождения выбранного рандомом из list_sel_string в неполный файл
 
-                # цикл прохода по неполному файлу
-                # for row_in_range_half in wb_half_range:
-                #     # чищу список для временной строки
-                #     list_one_string = []
-                #
-                #     # прохожу строку
-                #     for cell_in_row_half in row_in_range_half:
-                #         list_one_string.append(cell_in_row_half.value)
-                #
-                #     # все записи из неполного файла
-                #     list_half_file.append(list_one_string)
-
+                # print(*list_half_file, sep='\n')
 
 
                 # выбрать dif_string штук из list_sel_string и добавить только их
@@ -334,21 +323,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     self.window_info.setText(f'Не хватило данных для добавления,\n'
                                              f'добавлено в файл сколько было.')
                     self.window_info.exec_()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
