@@ -282,26 +282,49 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # перевод значения в поле шага 3 в число "СКОЛЬКО ХОЧЕТСЯ СТРОК"
         count_string_want = int(self.lineEdit_max_string.text())
 
+        # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
+        dif_string = count_string_want - count_string_half
+
         # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
-        if count_string_half >= count_string_want:
+        if dif_string <= 0:
             # информационное окно о сохранении файлов
             self.window_info = PyQt5.QtWidgets.QMessageBox()
             self.window_info.setWindowTitle('Строки')
-            self.window_info.setText(f'Количество строк в неполном файле больше, чем в ПУНКТЕ 3')
+            self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
+                                     f'чем в ПУНКТЕ 3, их разница равна {dif_string}')
             self.window_info.exec_()
         else:
-            # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
-            dif_string = count_string_want - count_string_half
-            # print(dif_string)
-
+            # если "сколько я хочу добавить строк" больше того, что можно добавить, то добавлять всё из list_sel_string
             if dif_string > len(list_sel_string):
                 # добавляем всё что есть в list_sel_string
                 pass
             else:
-                # выбрать dif_string штук из list_sel_string
+                # TODO
+                # тут надо сделать кортеж из неполного файла для проверки
+                # вхождения выбранного рандомом из list_sel_string в неполный файл
+
+                # цикл прохода по неполному файлу
+                # for row_in_range_half in wb_half_range:
+                #     # чищу список для временной строки
+                #     list_one_string = []
+                #
+                #     # прохожу строку
+                #     for cell_in_row_half in row_in_range_half:
+                #         list_one_string.append(cell_in_row_half.value)
+                #
+                #     # все записи из неполного файла
+                #     list_half_file.append(list_one_string)
+
+
+
+                # выбрать dif_string штук из list_sel_string и добавить только их
                 flag_add_succes = False
                 while flag_add_succes == False:
-                    # TODO
+                    random_string = random.choice(list_sel_string)
+                    print(add_string, random_string[0], random_string[1], random_string[2])
+
+                    if (sel_string[0]+sel_string[2]+sel_string[2]).lower() in XXXXXXXXXXXX:
+                        print(4444)
 
                     flag_add_succes = True
                 else:
@@ -323,14 +346,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
 
 
-                    # TODO
-                    # for add_string in range(dif_string):
-                    #     random_string = random.choice(list_sel_string)
-                    #     print(add_string, random_string[0], random_string[1], random_string[2])
-                    #
-                    #     if (sel_string[0]+sel_string[2]+sel_string[2]).lower() == 1111111111111:
-                    #         print(4444)
-                    #         pass
 
 
 
