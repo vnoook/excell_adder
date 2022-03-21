@@ -251,6 +251,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         list_sel_string = []  # выбранные строки из которых брать в неполный файл
         list_half_file = []  # весь неполный файл
 
+        # счётчик удачных добавлений из выбранных строк
+        count_add_succes = 0
+
         # цикл прохода по полному файлу
         for row_in_range_full in wb_full_range:
             # чищу список для временной строки
@@ -283,39 +286,51 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         count_string_want = int(self.lineEdit_max_string.text())
 
         # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
-        dif_string = count_string_want - count_string_half
+        count_dif_string = count_string_want - count_string_half
 
         # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
-        if dif_string <= 0:
+        if count_dif_string <= 0:
             # информационное окно о сохранении файлов
             self.window_info = PyQt5.QtWidgets.QMessageBox()
             self.window_info.setWindowTitle('Строки')
             self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
-                                     f'чем в ПУНКТЕ 3, их разница равна {dif_string}')
+                                     f'чем в ПУНКТЕ 3, их разница равна {count_dif_string}')
             self.window_info.exec_()
         else:
             # если "сколько я хочу добавить строк" больше того, что можно добавить, то добавлять всё из list_sel_string
-            if dif_string > len(list_sel_string):
+            if count_dif_string > len(list_sel_string):
                 # добавляем всё что есть в list_sel_string
                 pass
             else:
-                # TODO
-                # тут надо сделать кортеж из неполного файла для проверки
-                # вхождения выбранного рандомом из list_sel_string в неполный файл
+                # кортеж из неполного файла для проверки
+                # вхождения выбранного с рандомом из list_sel_string в неполный файл
+                list_dif = []
+                for str_half in list_half_file:
+                    str_temp = ''
+                    for cell_half in range(0, 3):  # беру первые три значения где ФИО
+                        # преобразую их в безпробельную строку в нижнем регистре
+                        str_temp = str_temp + ''.join(str_half[cell_half].lower().split())
+                    list_dif.append(str_temp)
+                tuple_half_file = tuple(list_dif)
 
-                # print(*list_half_file, sep='\n')
-
-
-                # выбрать dif_string штук из list_sel_string и добавить только их
-                flag_add_succes = False
+                # выбрать count_dif_string штук из list_sel_string и добавить только их
+                flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
                 while flag_add_succes == False:
+                    # выбираю случайную строку из подготовленных по специальностям
                     random_string = random.choice(list_sel_string)
-                    print(add_string, random_string[0], random_string[1], random_string[2])
 
-                    if (sel_string[0]+sel_string[2]+sel_string[2]).lower() in XXXXXXXXXXXX:
-                        print(4444)
+                    # преобразую её в безпробельную строку в нижнем регистре
+                    compare_string = ''.join(random_string[0:3]).lower()
 
-                    flag_add_succes = True
+                    # проверяю есть ли рандомная строка в выбраном списке
+                    if compare_string in tuple_half_file:
+                        print(compare_string)
+                        # TODO
+                    else:
+                        count_add_succes += 1
+                        if count_add_succes == count_dif_string:
+                            flag_add_succes = True
+                        print(count_add_succes)
                 else:
                     # информационное окно о сохранении файлов
                     self.window_info = PyQt5.QtWidgets.QMessageBox()
