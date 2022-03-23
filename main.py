@@ -150,6 +150,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.MultiSelection)
         self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
         self.listWidget_specialization.sortItems(True)
+        self.listWidget_specialization.setEnabled(False)
         # ************************************************************************************************************
 
         # pushButton_do_fill_data
@@ -216,34 +217,29 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         if self.label_path_full_file.text() != self.label_path_half_file.text():
             if self.text_empty_path_file not in (self.label_path_full_file.text(), self.label_path_half_file.text()):
                 self.pushButton_do_fill_data.setEnabled(True)
+                self.listWidget_specialization.setEnabled(True)
         else:
             self.pushButton_do_fill_data.setEnabled(False)
+            self.listWidget_specialization.setEnabled(False)
+            self.listWidget_specialization.clear()
+
+        if self.listWidget_specialization.isEnabled():
+            # открыть файлы Полный, и выбрать лист
+            wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
+            wb_full_s = wb_full.active
+
+            # TODO
+            # сделать вывод специализаций в self.listWidget_specialization
+            self.listWidget_specialization.addItems(sorted(self.spec_list, reverse=False))
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
         # считаю время заполнения
         time_start = time.time()
 
-        # открыть файлы Полный и НЕПолный, и выбрать листы
-        wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
-        wb_full_s = wb_full.active
+        # открыть файл НЕПолный, и выбрать лист
         wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
         wb_half_s = wb_half.active
-
-
-
-
-        # TODO
-        # сделать вывод специализаций в self.listWidget_specialization
-        self.listWidget_specialization.addItems(sorted(self.spec_list, reverse=False))
-
-
-
-
-
-
-
-
 
         # сформированные диапазоны обработки
         wb_full_range = wb_full_s[self.range_full_file]
