@@ -38,7 +38,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
-        self.setGeometry(600, 300, 900, 340)
+        self.setGeometry(600, 200, 900, 800)
 
         # объекты на главном окне
         # label_full_file
@@ -143,23 +143,31 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
 
 
-        # # comboBox_specialization
-        # self.comboBox_specialization = PyQt5.QtWidgets.QComboBox(self)
-        # self.comboBox_specialization.setObjectName('comboBox_specialization')
-        # self.comboBox_specialization.setGeometry(PyQt5.QtCore.QRect(10, 350, 70, 20))
-        # self.comboBox_specialization.addItem('пусто')
-        # self.comboBox_specialization.setEnabled(True)
-        # self.comboBox_specialization.setVisible(True)
-        #
-        # item = QListWidgetItem(cfg.get_description())
-        # item.setFlags(item.flags() | Qt.ItemIsUserCheckable)
-        #
-        # self.comboBox_specialization.adjustSize()
-        # self.comboBox_specialization.setToolTip(self.comboBox_specialization.objectName())
-        # self.comboBox_specialization = PyQt5.QtWidgets.QLabel(self)
-        # font = PyQt5.QtGui.QFont()
-        # font.setPointSize(12)
-        # self.comboBox_specialization.setFont(font)
+
+
+        # listWidget_specialization
+        self.listWidget_specialization = PyQt5.QtWidgets.QListWidget(self)
+        self.listWidget_specialization.setObjectName('listWidget_specialization')
+        self.listWidget_specialization.setGeometry(PyQt5.QtCore.QRect(10, 350, 300, 300))
+        self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QListView.MultiSelection)
+        # self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.MultiSelection)
+        self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
+
+        self.listWidget_specialization.sortItems(True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
