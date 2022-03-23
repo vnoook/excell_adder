@@ -32,7 +32,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.max_string = '260'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
-        self.spec_list = ('Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия')
+        self.spec_list = ['Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия']
         self.range_full_file = 'A2:J11501'
         self.range_half_file = 'A2:J215'
 
@@ -141,43 +141,23 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_spec_string.setClearButtonEnabled(True)
         self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
 
-
-
-
-
+        # ************************************************************************************************************
         # listWidget_specialization
         self.listWidget_specialization = PyQt5.QtWidgets.QListWidget(self)
         self.listWidget_specialization.setObjectName('listWidget_specialization')
-        self.listWidget_specialization.setGeometry(PyQt5.QtCore.QRect(10, 350, 300, 300))
+        self.listWidget_specialization.setGeometry(PyQt5.QtCore.QRect(10, 250, 300, 300))
         self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QListView.MultiSelection)
         # self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.MultiSelection)
         self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
-
         self.listWidget_specialization.sortItems(True)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        # ************************************************************************************************************
 
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
         self.pushButton_do_fill_data.setObjectName('pushButton_do_fill_data')
         self.pushButton_do_fill_data.setEnabled(False)
         self.pushButton_do_fill_data.setText('Произвести заполнение')
-        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 260, 180, 25))
+        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 600, 180, 25))
         self.pushButton_do_fill_data.setFixedWidth(130)
         self.pushButton_do_fill_data.clicked.connect(self.do_fill_data)
         self.pushButton_do_fill_data.setToolTip(self.pushButton_do_fill_data.objectName())
@@ -186,7 +166,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.button_exit = PyQt5.QtWidgets.QPushButton(self)
         self.button_exit.setObjectName('button_exit')
         self.button_exit.setText('Выход')
-        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 300, 180, 25))
+        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 630, 180, 25))
         self.button_exit.setFixedWidth(50)
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
@@ -249,6 +229,21 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         wb_full_s = wb_full.active
         wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
         wb_half_s = wb_half.active
+
+
+
+
+        # TODO
+        # сделать вывод специализаций в self.listWidget_specialization
+        self.listWidget_specialization.addItems(sorted(self.spec_list, reverse=False))
+
+
+
+
+
+
+
+
 
         # сформированные диапазоны обработки
         wb_full_range = wb_full_s[self.range_full_file]
