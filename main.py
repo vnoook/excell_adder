@@ -32,7 +32,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.max_string = '260'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
-        self.spec_list = ['Дерматовенерология', 'Педиатрия', 'Аллергология и иммунология', 'Неврология', 'Хирургия']
+        self.spec_set = set()
         self.range_full_file = 'A2:J11501'
         self.range_half_file = 'A2:J215'
 
@@ -133,13 +133,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_spec_string.adjustSize()
         self.label_spec_string.setToolTip(self.label_spec_string.objectName())
 
-        # lineEdit_spec_string
-        self.lineEdit_spec_string = PyQt5.QtWidgets.QLineEdit(self)
-        self.lineEdit_spec_string.setObjectName('lineEdit_spec_string')
-        self.lineEdit_spec_string.setText(', '.join(self.spec_list))
-        self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 500, 20))
-        self.lineEdit_spec_string.setClearButtonEnabled(True)
-        self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
+        # # lineEdit_spec_string
+        # self.lineEdit_spec_string = PyQt5.QtWidgets.QLineEdit(self)
+        # self.lineEdit_spec_string.setObjectName('lineEdit_spec_string')
+        # self.lineEdit_spec_string.setText(', '.join(self.spec_list))
+        # self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 500, 20))
+        # self.lineEdit_spec_string.setClearButtonEnabled(True)
+        # self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
 
         # ************************************************************************************************************
         # listWidget_specialization
@@ -215,9 +215,12 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # активация и деактивация объектов на форме зависящее от выбраны ли все файлы и они разные
         if self.label_path_full_file.text() != self.label_path_half_file.text():
+            # если выбранные файлы разные
             if self.text_empty_path_file not in (self.label_path_full_file.text(), self.label_path_half_file.text()):
                 self.pushButton_do_fill_data.setEnabled(True)
                 self.listWidget_specialization.setEnabled(True)
+                self.listWidget_specialization.clear()
+        # если выбранные файлы одинаковые
         else:
             self.pushButton_do_fill_data.setEnabled(False)
             self.listWidget_specialization.setEnabled(False)
@@ -228,9 +231,18 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
             wb_full_s = wb_full.active
 
-            # TODO
-            # сделать вывод специализаций в self.listWidget_specialization
-            self.listWidget_specialization.addItems(sorted(self.spec_list, reverse=False))
+            # сформированные диапазоны обработки
+            wb_full_range = wb_full_s[self.range_full_file]
+
+            # множество для хранения специализаций
+            spec_set = set()
+
+            # цикл прохода по полному файлу
+            for row_in_range_full in wb_full_range:
+                if row_in_range_full[-1].value:
+                    spec_set.add(row_in_range_full[-1].value)
+
+            self.listWidget_specialization.addItems(sorted(spec_set, reverse=False))
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
@@ -263,7 +275,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 list_one_string.append(cell_in_row_full.value)
 
             # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
-            if list_one_string[-1] in self.spec_list:
+            if list_one_string[-1] in self.spec_set:
                 list_sel_string.append(list_one_string)
 
         # цикл прохода по неполному файлу
