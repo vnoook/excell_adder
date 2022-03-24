@@ -247,6 +247,16 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
+        # TODO
+        # 4.1) взять строку из Полного
+        # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
+        # 6.1) вставить в НЕПолный или взять новую
+        #
+        # 4.2) взять все строки в Полном
+        # 5.2) взять все строки в НЕПолном,
+        # 6.2) вычесть из Полных все строки из НЕПолного файла
+        # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
+
         # считаю время заполнения
         time_start = time.time()
 
@@ -268,7 +278,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # счётчик удачных добавлений из выбранных строк
         count_add_succes = 0
 
-        # цикл прохода по полному файлу
+        # выбор выбранных строк в списке специальностей
+        spec_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
+
+        # цикл прохода по полному файлу для выбора list_sel_string фильтрованных
         for row_in_range_full in wb_full_range:
             # чищу список для временной строки
             list_one_string = []
@@ -278,8 +291,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 list_one_string.append(cell_in_row_full.value)
 
             # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
-            if list_one_string[-1] in self.spec_set:
+            if list_one_string[-1] in spec_selected:
                 list_sel_string.append(list_one_string)
+        print()
+        # print(*list_sel_string, sep='\n')
+        print()
 
         # цикл прохода по неполному файлу
         for row_in_range_half in wb_half_range:
@@ -352,27 +368,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     self.window_info.setText(f'Не хватило данных для добавления,\n'
                                              f'добавлено в файл сколько было.')
                     self.window_info.exec_()
-
-
-
-
-
-        # TODO
-        # 4.1) взять строку из Полного
-        # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
-        # 6.1) вставить в НЕПолный или взять новую
-        #
-        # 4.2) взять все строки в Полном
-        # 5.2) взять все строки в НЕПолном,
-        # 6.2) вычесть из Полных все строки из НЕПолного файла
-        # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
-
-
-
-
-
-
-
 
 
         # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
