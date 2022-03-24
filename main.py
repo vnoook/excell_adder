@@ -235,21 +235,24 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_full_range = wb_full_s[self.range_full_file]
 
             # множество для хранения специализаций
-            spec_set = set()
+            self.spec_set = set()
 
             # цикл прохода по полному файлу
             for row_in_range_full in wb_full_range:
                 if row_in_range_full[-1].value:
-                    spec_set.add(row_in_range_full[-1].value)
+                    self.spec_set.add(row_in_range_full[-1].value)
 
-            self.listWidget_specialization.addItems(sorted(spec_set, reverse=False))
+            self.listWidget_specialization.addItems(sorted(self.spec_set, reverse=False))
+            wb_full.close()
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
         # считаю время заполнения
         time_start = time.time()
 
-        # открыть файл НЕПолный, и выбрать лист
+        # открыть файл Полный и НЕПолный, и выбрать листы
+        wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
+        wb_full_s = wb_full.active
         wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
         wb_half_s = wb_half.active
 
@@ -425,7 +428,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # self.wb_file_IC.save(self.file_IC)
         # self.wb_file_IC.close()
         # self.wb_file_GASPS.close()
-        #
 
         # считаю время заполнения
         time_finish = time.time()
