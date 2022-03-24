@@ -280,8 +280,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # выбор выбранных строк в списке специальностей
         spec_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
+        # TODO
+        # сделать проверку на выбранные в listWidget_specialization и если ничего не выбрано, но выдать сообщение
 
-        # цикл прохода по полному файлу для выбора list_sel_string фильтрованных
+        # цикл прохода по полному файлу для выбора list_sel_string фильтрованных из spec_selected
         for row_in_range_full in wb_full_range:
             # чищу список для временной строки
             list_one_string = []
@@ -293,9 +295,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
             if list_one_string[-1] in spec_selected:
                 list_sel_string.append(list_one_string)
-        print()
-        # print(*list_sel_string, sep='\n')
-        print()
 
         # цикл прохода по неполному файлу
         for row_in_range_half in wb_half_range:
@@ -332,6 +331,12 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 # добавляем всё что есть в list_sel_string
                 pass
             else:
+                # TODO
+                # остановился тут
+
+
+
+
                 # кортеж из неполного файла для проверки
                 # вхождения выбранного с рандомом из list_sel_string в неполный файл
                 list_dif = []
