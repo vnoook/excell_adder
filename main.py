@@ -29,7 +29,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = '260'
+        self.max_string = '111'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_set = set()
@@ -38,7 +38,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
-        self.setGeometry(600, 200, 900, 800)
+        self.setGeometry(600, 200, 700, 610)
 
         # объекты на главном окне
         # label_full_file
@@ -133,32 +133,22 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.label_spec_string.adjustSize()
         self.label_spec_string.setToolTip(self.label_spec_string.objectName())
 
-        # # lineEdit_spec_string
-        # self.lineEdit_spec_string = PyQt5.QtWidgets.QLineEdit(self)
-        # self.lineEdit_spec_string.setObjectName('lineEdit_spec_string')
-        # self.lineEdit_spec_string.setText(', '.join(self.spec_list))
-        # self.lineEdit_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 220, 500, 20))
-        # self.lineEdit_spec_string.setClearButtonEnabled(True)
-        # self.lineEdit_spec_string.setToolTip(self.lineEdit_spec_string.objectName())
-
-        # ************************************************************************************************************
         # listWidget_specialization
         self.listWidget_specialization = PyQt5.QtWidgets.QListWidget(self)
         self.listWidget_specialization.setObjectName('listWidget_specialization')
-        self.listWidget_specialization.setGeometry(PyQt5.QtCore.QRect(10, 250, 300, 300))
+        self.listWidget_specialization.setGeometry(PyQt5.QtCore.QRect(10, 220, 400, 300))
         self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QListView.MultiSelection)
         # self.listWidget_specialization.setSelectionMode(PyQt5.QtWidgets.QAbstractItemView.MultiSelection)
         self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
         self.listWidget_specialization.sortItems(True)
         self.listWidget_specialization.setEnabled(False)
-        # ************************************************************************************************************
 
         # pushButton_do_fill_data
         self.pushButton_do_fill_data = PyQt5.QtWidgets.QPushButton(self)
         self.pushButton_do_fill_data.setObjectName('pushButton_do_fill_data')
         self.pushButton_do_fill_data.setEnabled(False)
         self.pushButton_do_fill_data.setText('Произвести заполнение')
-        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 600, 180, 25))
+        self.pushButton_do_fill_data.setGeometry(PyQt5.QtCore.QRect(10, 535, 180, 25))
         self.pushButton_do_fill_data.setFixedWidth(130)
         self.pushButton_do_fill_data.clicked.connect(self.do_fill_data)
         self.pushButton_do_fill_data.setToolTip(self.pushButton_do_fill_data.objectName())
@@ -167,7 +157,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.button_exit = PyQt5.QtWidgets.QPushButton(self)
         self.button_exit.setObjectName('button_exit')
         self.button_exit.setText('Выход')
-        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 630, 180, 25))
+        self.button_exit.setGeometry(PyQt5.QtCore.QRect(10, 570, 180, 25))
         self.button_exit.setFixedWidth(50)
         self.button_exit.clicked.connect(self.click_on_btn_exit)
         self.button_exit.setToolTip(self.button_exit.objectName())
@@ -331,12 +321,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 # добавляем всё что есть в list_sel_string
                 pass
             else:
-                # TODO
-                # остановился тут
-
-
-
-
                 # кортеж из неполного файла для проверки
                 # вхождения выбранного с рандомом из list_sel_string в неполный файл
                 list_dif = []
@@ -423,15 +407,14 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         #             if self.flag_edit_prest:
         #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
         #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
-        #
-        # # сохраняю файл и закрываю оба
+
+        # сохраняю файл и закрываю оба
         # self.wb_file_IC.save(self.file_IC)
-        # self.wb_file_IC.close()
-        # self.wb_file_GASPS.close()
+        wb_full.close()
+        wb_half.close()
 
         # считаю время заполнения
         time_finish = time.time()
-        '\n' + '.' * 30 + 'закончено за', round(time_finish - time_start, 1), 'секунд'
 
         # информационное окно о сохранении файлов
         self.window_info = PyQt5.QtWidgets.QMessageBox()
