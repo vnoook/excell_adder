@@ -219,9 +219,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             self.listWidget_specialization.clear()
 
         if self.listWidget_specialization.isEnabled():
-            # открыть файлы Полный, и выбрать лист
+            # открыть файлы Полный и Неполный, и выбрать листы
             wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
             wb_full_s = wb_full.active
+            wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
+            wb_half_s = wb_half.active
+
+            # посчитать количество строк и вывести на форме
+            self.label_full_file.setText(self.label_full_file.text() + f' (строк в файле {str(wb_full_s.max_row -1)})')
+            self.label_full_file.adjustSize()
+            self.label_half_file.setText(self.label_half_file.text() + f' (строк в файле {str(wb_half_s.max_row -1)})')
+            self.label_half_file.adjustSize()
 
             # сформированные диапазоны обработки
             wb_full_range = wb_full_s[self.range_full_file]
@@ -236,6 +244,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             self.listWidget_specialization.addItems(sorted(self.spec_set, reverse=False))
             wb_full.close()
+            wb_half.close()
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
@@ -266,13 +275,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             # списки всех строк, одной строки прохода, выбранных строк по специальностям
             list_one_string = []  # временная переменная для значения ячейки
-            list_filter_string = []  # фильтрованные строки из Полного файла которые устраивают выбранным специальностям
+            list_filtered_string = []  # фильтрованные строки из Полного файла которые устраивают выбранным специальностям
             list_half_file = []  # весь неполный файл
 
             # счётчик удачных добавлений из выбранных строк
             count_add_succes = 0
 
-            # цикл прохода по полному файлу, для заполнения list_filter_string фильтрованных из spec_selected
+            # цикл прохода по полному файлу, для заполнения list_filtered_string фильтрованных из spec_selected
             for row_in_range_full in wb_full_range:
                 # чищу список для временной строки
                 list_one_string = []
@@ -283,7 +292,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                 # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
                 if list_one_string[-1] in spec_selected:
-                    list_filter_string.append(list_one_string)
+                    list_filtered_string.append(list_one_string)
 
             # цикл прохода по неполному файлу
             for row_in_range_half in wb_half_range:
@@ -308,7 +317,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             count_add_string = count_string_want - count_string_half
 
             # количество строк в отфильтрованном списке
-            count_filter_string = len(list_filter_string)
+            count_filter_string = len(list_filtered_string)
 
             # количество строк которых будет реально добавлены в неполный файл
             count_real_data_add = count_filter_string - count_add_string
@@ -322,9 +331,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
-                # если добавляемых больше, чем отфильтрованых, то добавлять всё из list_filter_string
+                # если добавляемых больше, чем отфильтрованых, то добавлять всё из list_filtered_string
                 if count_add_string > count_filter_string:
-                    # флаг добавления "всё что есть в list_filter_string"
+                    # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = True
 
                     # информационное окно
@@ -334,11 +343,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                              f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}')
                     self.window_info.exec_()
                 else:
-                    # флаг добавления "всё что есть в list_filter_string"
+                    # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = False
 
-                    # кортеж с первыми тремя ячейками ФИО из неполного файла для проверки
-                    # вхождения выбранного с рандомом из list_filter_string в неполный файл
+                    # кортеж неполного файла с первыми тремя ячейками ФИО для проверки
+                    # вхождения случайно выбранного из list_filtered_string
                     list_dif = []
                     for str_half in list_half_file:
                         str_temp = ''
@@ -348,11 +357,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                         list_dif.append(str_temp)
                     tuple_half_file = tuple(list_dif)
 
-                    # выбрать count_add_string штук из list_filter_string и добавить только их
+                    # выбрать count_add_string штук из list_filtered_string и добавить только их
                     flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
                     while flag_add_succes == False:
                         # выбираю случайную строку из подготовленных по специальностям
-                        random_string = random.choice(list_filter_string)
+                        random_string = random.choice(list_filtered_string)
 
                         # преобразую её в безпробельную строку в нижнем регистре
                         compare_string = ''.join(random_string[0:3]).lower()
