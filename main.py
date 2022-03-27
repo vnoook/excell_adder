@@ -307,21 +307,37 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # разница количества строк между тем, что "сколько хочу строк" и строк уже имеется в файле
             count_add_string = count_string_want - count_string_half
 
+            # количество строк в отфильтрованном списке
+            count_filter_string = len(list_filter_string)
+
+            # количество строк которых будет реально добавлены в неполный файл
+            count_real_data_add = count_filter_string - count_add_string
+
             # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
             if count_add_string <= 0:
-                # информационное окно о сохранении файлов
+                # информационное окно
                 self.window_info = PyQt5.QtWidgets.QMessageBox()
                 self.window_info.setWindowTitle('Строки')
                 self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
-                # если "сколько я хочу добавить строк" больше того, что можно добавить, то добавлять всё из list_filter_string
-                if count_add_string > len(list_filter_string):
-                    # добавляем всё что есть в list_filter_string
-                    pass
+                # если добавляемых больше, чем отфильтрованых, то добавлять всё из list_filter_string
+                if count_add_string > count_filter_string:
+                    # флаг добавления "всё что есть в list_filter_string"
+                    flag_add_all = True
+
+                    # информационное окно
+                    self.window_info = PyQt5.QtWidgets.QMessageBox()
+                    self.window_info.setWindowTitle('Строки')
+                    self.window_info.setText(f'Количество строк в Полном файле по этим специальностям\n'
+                                             f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}')
+                    self.window_info.exec_()
                 else:
-                    # кортеж из неполного файла для проверки
+                    # флаг добавления "всё что есть в list_filter_string"
+                    flag_add_all = False
+
+                    # кортеж с первыми тремя ячейками ФИО из неполного файла для проверки
                     # вхождения выбранного с рандомом из list_filter_string в неполный файл
                     list_dif = []
                     for str_half in list_half_file:
