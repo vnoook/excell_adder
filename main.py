@@ -75,7 +75,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # label_half_file
         self.label_half_file = PyQt5.QtWidgets.QLabel(self)
         self.label_half_file.setObjectName('label_half_file')
-        self.label_half_file.setText('2. Выберите неполный файл')
+        self.label_half_file.setText('2. Выберите Неполный файл')
         self.label_half_file.setGeometry(PyQt5.QtCore.QRect(10, 70, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -125,7 +125,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # label_spec_string
         self.label_spec_string = PyQt5.QtWidgets.QLabel(self)
         self.label_spec_string.setObjectName('label_spec_string')
-        self.label_spec_string.setText('4. Выберите специальности одну или несколько')
+        self.label_spec_string.setText('4. Выберите специальности, одну или несколько')
         self.label_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 190, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -174,7 +174,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         if self.sender().objectName() == self.toolButton_select_full_file.objectName():
             self.info_for_open_file = 'Выберите полный файл формата Excel, версии старше 2007 года (.XLSX)'
         elif self.sender().objectName() == self.toolButton_select_half_file.objectName():
-            self.info_for_open_file = 'Выберите неполный файл формата Excel, версии старше 2007 года (.XLSX)'
+            self.info_for_open_file = 'Выберите Неполный файл формата Excel, версии старше 2007 года (.XLSX)'
 
         # непосредственное окно выбора файла и переменная для хранения пути файла
         data_of_open_file_name = PyQt5.QtWidgets.QFileDialog.getOpenFileName(self,
@@ -195,7 +195,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 self.label_path_full_file.setText(file_name)
                 self.label_path_full_file.adjustSize()
 
-        # нажата кнопка выбора неполного файла
+        # нажата кнопка выбора Неполного файла
         if self.sender().objectName() == self.toolButton_select_half_file.objectName():
             if file_name == '':
                 self.label_path_half_file.setText(old_path_of_selected_half_file)
@@ -263,7 +263,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # считаю время заполнения
             time_start = time.time()
 
-            # открыть файл Полный и НЕПолный, и выбрать листы
+            # открыть файл Полный и Неполный, и выбрать листы
             wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
             wb_full_s = wb_full.active
             wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
@@ -276,7 +276,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # списки всех строк, одной строки прохода, выбранных строк по специальностям
             list_one_string = []  # временная переменная для значения ячейки
             list_filtered_string = []  # фильтрованные строки из Полного файла которые устраивают выбранным специальностям
-            list_half_file = []  # весь неполный файл
+            list_half_file = []  # весь Неполный файл
 
             # счётчик удачных добавлений из выбранных строк
             count_add_succes = 0
@@ -294,7 +294,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 if list_one_string[-1] in spec_selected:
                     list_filtered_string.append(list_one_string)
 
-            # цикл прохода по неполному файлу
+            # цикл прохода по Неполному файлу
             for row_in_range_half in wb_half_range:
                 # чищу список для временной строки
                 list_one_string = []
@@ -303,31 +303,31 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 for cell_in_row_half in row_in_range_half:
                     list_one_string.append(cell_in_row_half.value)
 
-                # все записи из неполного файла
+                # все записи из Неполного файла
                 list_half_file.append(list_one_string)
 
             # количество строк "сколько хочу строк" (перевод значения в поле шага 3)
             count_string_want = int(self.lineEdit_max_string.text())
 
-            # количество строк в неполном файле (-1 потому что верхняя строка это шапка)
+            # количество строк в Неполном файле (-1 потому что верхняя строка это шапка)
             count_string_half = wb_half_s.max_row -1
 
-            # сколько нужно добавить строк в неполный файл
+            # сколько нужно добавить строк в Неполный файл
             # разница количества строк между тем, что "сколько хочу строк" и строк уже имеется в файле
             count_add_string = count_string_want - count_string_half
 
             # количество строк в отфильтрованном списке
             count_filter_string = len(list_filtered_string)
 
-            # количество строк которых будет реально добавлены в неполный файл
+            # количество строк которых будет реально добавлены в Неполный файл
             count_real_data_add = count_filter_string - count_add_string
 
-            # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
+            # если количество строк в Неполном меньше, чем хочется, то добавить разницу строк
             if count_add_string <= 0:
                 # информационное окно
                 self.window_info = PyQt5.QtWidgets.QMessageBox()
                 self.window_info.setWindowTitle('Строки')
-                self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
+                self.window_info.setText(f'Количество строк в Неполном файле больше или одинаково,\n'
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
@@ -346,16 +346,27 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = False
 
-                    # кортеж неполного файла с первыми тремя ячейками ФИО для проверки
+                    print(11111)
+
+                    # кортеж Неполного файла с первыми тремя ячейками ФИО для проверки
                     # вхождения случайно выбранного из list_filtered_string
                     list_dif = []
+                    # print(f'{list_half_file = }')
+                    # print(f'{len(list_half_file) = }')
                     for str_half in list_half_file:
+                        print(f'{str_half = }')
                         str_temp = ''
                         for cell_half in range(0, 3):  # беру первые три значения где ФИО
                             # преобразую их в безпробельную строку в нижнем регистре
-                            str_temp = str_temp + ''.join(str_half[cell_half].lower().split())
+                            str_temp = str_temp + ''.join(str(str_half[cell_half]).lower().split())
+                        print(f'{str_temp = }')
                         list_dif.append(str_temp)
                     tuple_half_file = tuple(list_dif)
+
+                    # print(f'{list_dif = }')
+                    # print(f'{tuple_half_file = }')
+
+                    print(22222)
 
                     # выбрать count_add_string штук из list_filtered_string и добавить только их
                     flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
@@ -382,6 +393,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                         self.window_info.setText(f'Не хватило данных для добавления,\n'
                                                  f'добавлено в файл сколько было.')
                         self.window_info.exec_()
+
+                    print(333333)
 
 
             # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
@@ -432,6 +445,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             #             if self.flag_edit_prest:
             #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
             #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
+
+            pass
 
             # сохраняю файл и закрываю оба
             # self.wb_file_IC.save(self.file_IC)
