@@ -29,7 +29,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
         self.file_full = ''
         self.file_half = ''
-        self.max_string = '111'
+        self.max_string = '260'
         self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_set = set()
@@ -125,7 +125,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # label_spec_string
         self.label_spec_string = PyQt5.QtWidgets.QLabel(self)
         self.label_spec_string.setObjectName('label_spec_string')
-        self.label_spec_string.setText('4. Введите специализации через запятую')
+        self.label_spec_string.setText('4. Введите специальности через запятую')
         self.label_spec_string.setGeometry(PyQt5.QtCore.QRect(10, 190, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -224,7 +224,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # сформированные диапазоны обработки
             wb_full_range = wb_full_s[self.range_full_file]
 
-            # множество для хранения специализаций
+            # множество для хранения специальностей
             self.spec_set = set()
 
             # цикл прохода по полному файлу
@@ -237,191 +237,188 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
-        # TODO
-        # 4.1) взять строку из Полного
-        # 5.1) проверить, есть ли она в НЕПолном (проверять по ФИО+почта)
-        # 6.1) вставить в НЕПолный или взять новую
-        #
-        # 4.2) взять все строки в Полном
-        # 5.2) взять все строки в НЕПолном,
-        # 6.2) вычесть из Полных все строки из НЕПолного файла
-        # 7.2) из полученного множества случайным образом брать строки для добавления в НЕПолный
-
-        # считаю время заполнения
-        time_start = time.time()
-
-        # открыть файл Полный и НЕПолный, и выбрать листы
-        wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
-        wb_full_s = wb_full.active
-        wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
-        wb_half_s = wb_half.active
-
-        # сформированные диапазоны обработки
-        wb_full_range = wb_full_s[self.range_full_file]
-        wb_half_range = wb_half_s[self.range_half_file]
-
-        # списки всех строк, одной строки прохода, выбранных строк по специальностям
-        list_one_string = []  # временная переменная для значения ячейки
-        list_sel_string = []  # выбранные строки из которых брать в неполный файл
-        list_half_file = []  # весь неполный файл
-
-        # счётчик удачных добавлений из выбранных строк
-        count_add_succes = 0
-
         # выбор выбранных строк в списке специальностей
         spec_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
-        # TODO
-        # сделать проверку на выбранные в listWidget_specialization и если ничего не выбрано, но выдать сообщение
 
-        # цикл прохода по полному файлу для выбора list_sel_string фильтрованных из spec_selected
-        for row_in_range_full in wb_full_range:
-            # чищу список для временной строки
-            list_one_string = []
-
-            # прохожу строку
-            for cell_in_row_full in row_in_range_full:
-                list_one_string.append(cell_in_row_full.value)
-
-            # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
-            if list_one_string[-1] in spec_selected:
-                list_sel_string.append(list_one_string)
-
-        # цикл прохода по неполному файлу
-        for row_in_range_half in wb_half_range:
-            # чищу список для временной строки
-            list_one_string = []
-
-            # прохожу строку
-            for cell_in_row_half in row_in_range_half:
-                list_one_string.append(cell_in_row_half.value)
-
-            # все записи из неполного файла
-            list_half_file.append(list_one_string)
-
-        # количество строк в неполном файле -1 потому что верхняя строка это шапка
-        count_string_half = wb_half_s.max_row -1
-
-        # перевод значения в поле шага 3 в число "СКОЛЬКО ХОЧЕТСЯ СТРОК"
-        count_string_want = int(self.lineEdit_max_string.text())
-
-        # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
-        count_dif_string = count_string_want - count_string_half
-
-        # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
-        if count_dif_string <= 0:
+        # проверка на количество выбранных строк в listWidget_specialization
+        if len(spec_selected) == 0:
             # информационное окно о сохранении файлов
             self.window_info = PyQt5.QtWidgets.QMessageBox()
-            self.window_info.setWindowTitle('Строки')
-            self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
-                                     f'чем в ПУНКТЕ 3, их разница равна {count_dif_string}')
+            self.window_info.setWindowTitle('Число')
+            self.window_info.setText(f'В списке специальностей ничего не выбрано,\n'
+                                     f'выберите хотя бы одну строку')
             self.window_info.exec_()
         else:
-            # если "сколько я хочу добавить строк" больше того, что можно добавить, то добавлять всё из list_sel_string
-            if count_dif_string > len(list_sel_string):
-                # добавляем всё что есть в list_sel_string
-                pass
+            # считаю время заполнения
+            time_start = time.time()
+
+            # открыть файл Полный и НЕПолный, и выбрать листы
+            wb_full = openpyxl.load_workbook(self.label_path_full_file.text())
+            wb_full_s = wb_full.active
+            wb_half = openpyxl.load_workbook(self.label_path_half_file.text())
+            wb_half_s = wb_half.active
+
+            # сформированные диапазоны обработки
+            wb_full_range = wb_full_s[self.range_full_file]
+            wb_half_range = wb_half_s[self.range_half_file]
+
+            # списки всех строк, одной строки прохода, выбранных строк по специальностям
+            list_one_string = []  # временная переменная для значения ячейки
+            list_sel_string = []  # выбранные строки из которых брать в неполный файл
+            list_half_file = []  # весь неполный файл
+
+            # счётчик удачных добавлений из выбранных строк
+            count_add_succes = 0
+
+            # цикл прохода по полному файлу для выбора list_sel_string фильтрованных из spec_selected
+            for row_in_range_full in wb_full_range:
+                # чищу список для временной строки
+                list_one_string = []
+
+                # прохожу строку
+                for cell_in_row_full in row_in_range_full:
+                    list_one_string.append(cell_in_row_full.value)
+
+                # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
+                if list_one_string[-1] in spec_selected:
+                    list_sel_string.append(list_one_string)
+
+            # цикл прохода по неполному файлу
+            for row_in_range_half in wb_half_range:
+                # чищу список для временной строки
+                list_one_string = []
+
+                # прохожу строку
+                for cell_in_row_half in row_in_range_half:
+                    list_one_string.append(cell_in_row_half.value)
+
+                # все записи из неполного файла
+                list_half_file.append(list_one_string)
+
+            # количество строк в неполном файле -1 потому что верхняя строка это шапка
+            count_string_half = wb_half_s.max_row -1
+
+            # перевод значения в поле шага 3 в число "СКОЛЬКО ХОЧЕТСЯ СТРОК"
+            count_string_want = int(self.lineEdit_max_string.text())
+
+            # разница количества строк между тем, что "хочу чтобы было в файле" и того что нужно добавить
+            count_dif_string = count_string_want - count_string_half
+
+            # если количество строк в неполном меньше, чем хочется, то добавить разницу строк
+            if count_dif_string <= 0:
+                # информационное окно о сохранении файлов
+                self.window_info = PyQt5.QtWidgets.QMessageBox()
+                self.window_info.setWindowTitle('Строки')
+                self.window_info.setText(f'Количество строк в неполном файле больше или одинаково,\n'
+                                         f'чем в ПУНКТЕ 3, их разница равна {count_dif_string}')
+                self.window_info.exec_()
             else:
-                # кортеж из неполного файла для проверки
-                # вхождения выбранного с рандомом из list_sel_string в неполный файл
-                list_dif = []
-                for str_half in list_half_file:
-                    str_temp = ''
-                    for cell_half in range(0, 3):  # беру первые три значения где ФИО
-                        # преобразую их в безпробельную строку в нижнем регистре
-                        str_temp = str_temp + ''.join(str_half[cell_half].lower().split())
-                    list_dif.append(str_temp)
-                tuple_half_file = tuple(list_dif)
-
-                # выбрать count_dif_string штук из list_sel_string и добавить только их
-                flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
-                while flag_add_succes == False:
-                    # выбираю случайную строку из подготовленных по специальностям
-                    random_string = random.choice(list_sel_string)
-
-                    # преобразую её в безпробельную строку в нижнем регистре
-                    compare_string = ''.join(random_string[0:3]).lower()
-
-                    # проверяю есть ли рандомная строка в выбраном списке
-                    if compare_string in tuple_half_file:
-                        print(compare_string)
-                        # TODO
-                    else:
-                        count_add_succes += 1
-                        if count_add_succes == count_dif_string:
-                            flag_add_succes = True
-                        print(count_add_succes)
+                # если "сколько я хочу добавить строк" больше того, что можно добавить, то добавлять всё из list_sel_string
+                if count_dif_string > len(list_sel_string):
+                    # добавляем всё что есть в list_sel_string
+                    pass
                 else:
-                    # информационное окно о сохранении файлов
-                    self.window_info = PyQt5.QtWidgets.QMessageBox()
-                    self.window_info.setWindowTitle('Строки')
-                    self.window_info.setText(f'Не хватило данных для добавления,\n'
-                                             f'добавлено в файл сколько было.')
-                    self.window_info.exec_()
+                    # кортеж из неполного файла для проверки
+                    # вхождения выбранного с рандомом из list_sel_string в неполный файл
+                    list_dif = []
+                    for str_half in list_half_file:
+                        str_temp = ''
+                        for cell_half in range(0, 3):  # беру первые три значения где ФИО
+                            # преобразую их в безпробельную строку в нижнем регистре
+                            str_temp = str_temp + ''.join(str_half[cell_half].lower().split())
+                        list_dif.append(str_temp)
+                    tuple_half_file = tuple(list_dif)
+
+                    # выбрать count_dif_string штук из list_sel_string и добавить только их
+                    flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
+                    while flag_add_succes == False:
+                        # выбираю случайную строку из подготовленных по специальностям
+                        random_string = random.choice(list_sel_string)
+
+                        # преобразую её в безпробельную строку в нижнем регистре
+                        compare_string = ''.join(random_string[0:3]).lower()
+
+                        # проверяю есть ли рандомная строка в выбраном списке
+                        if compare_string in tuple_half_file:
+                            print(compare_string)
+                            # TODO
+                        else:
+                            count_add_succes += 1
+                            if count_add_succes == count_dif_string:
+                                flag_add_succes = True
+                            print(count_add_succes)
+                    else:
+                        # информационное окно о сохранении файлов
+                        self.window_info = PyQt5.QtWidgets.QMessageBox()
+                        self.window_info.setWindowTitle('Строки')
+                        self.window_info.setText(f'Не хватило данных для добавления,\n'
+                                                 f'добавлено в файл сколько было.')
+                        self.window_info.exec_()
 
 
-        # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
-        #     wb_GASPS_cell_value = 'None'
-        # else:
-        #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
-        #
-        # for ikud in wb_GASPS_cell_value.split(";"):
-        #     set_data_GASPS.add(ikud.strip().replace('.', ''))
-        #
-        # tuple_data_GASPS = tuple(set_data_GASPS)
+            # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
+            #     wb_GASPS_cell_value = 'None'
+            # else:
+            #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
+            #
+            # for ikud in wb_GASPS_cell_value.split(";"):
+            #     set_data_GASPS.add(ikud.strip().replace('.', ''))
+            #
+            # tuple_data_GASPS = tuple(set_data_GASPS)
 
-        # # обработка файла ИЦ
-        # for row_in_range_IC in wb_IC_cells_range:
-        #     for cell_in_row_IC in row_in_range_IC:
-        #         # определение адреса ячейки из области данных
-        #         indexR_IC = wb_IC_cells_range.index(row_in_range_IC)
-        #         indexC_IC = row_in_range_IC.index(cell_in_row_IC)
-        #
-        #         # получение координаты и значения ячейки IC
-        #         if wb_IC_cells_range[indexR_IC][indexC_IC].value == None:
-        #             wb_IC_cell_value = 'None'
-        #         else:
-        #             wb_IC_cell_value = str(wb_IC_cells_range[indexR_IC][indexC_IC].value)
-        #
-        #         # очистка множества для номеров дел из колонки и
-        #         # разбивка строки на несколько номеров дел если есть ";"
-        #         set_data_IC.clear()
-        #         for ikud in wb_IC_cell_value.split(";"):
-        #             set_data_IC.add(ikud.strip().replace('.', ''))
-        #
-        #         tuple_data_IC = tuple(set_data_IC)
-        #
-        #         # раскраска колонок УД в ИЦ файле
-        #         for ikud in wb_IC_cell_value.split(";"):
-        #             ikud_split = ikud.strip().replace('.', '').replace(' ', '')
-        #
-        #             if (ikud_split in tuple_data_GASPS) and (ikud_split in tuple_data_IC):
-        #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-        #                     openpyxl.styles.PatternFill(start_color='FF0000', end_color='FF0000',
-        #                                                 fill_type='solid')
-        #             elif ikud_split not in tuple_data_GASPS:
-        #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-        #                     openpyxl.styles.PatternFill(start_color='878787', end_color='878787',
-        #                                                 fill_type='solid')
-        #
-        #             # обработка колонки преступности - добавляется номер УД к номеру преступления
-        #             if self.flag_edit_prest:
-        #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
-        #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
+            # # обработка файла ИЦ
+            # for row_in_range_IC in wb_IC_cells_range:
+            #     for cell_in_row_IC in row_in_range_IC:
+            #         # определение адреса ячейки из области данных
+            #         indexR_IC = wb_IC_cells_range.index(row_in_range_IC)
+            #         indexC_IC = row_in_range_IC.index(cell_in_row_IC)
+            #
+            #         # получение координаты и значения ячейки IC
+            #         if wb_IC_cells_range[indexR_IC][indexC_IC].value == None:
+            #             wb_IC_cell_value = 'None'
+            #         else:
+            #             wb_IC_cell_value = str(wb_IC_cells_range[indexR_IC][indexC_IC].value)
+            #
+            #         # очистка множества для номеров дел из колонки и
+            #         # разбивка строки на несколько номеров дел если есть ";"
+            #         set_data_IC.clear()
+            #         for ikud in wb_IC_cell_value.split(";"):
+            #             set_data_IC.add(ikud.strip().replace('.', ''))
+            #
+            #         tuple_data_IC = tuple(set_data_IC)
+            #
+            #         # раскраска колонок УД в ИЦ файле
+            #         for ikud in wb_IC_cell_value.split(";"):
+            #             ikud_split = ikud.strip().replace('.', '').replace(' ', '')
+            #
+            #             if (ikud_split in tuple_data_GASPS) and (ikud_split in tuple_data_IC):
+            #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
+            #                     openpyxl.styles.PatternFill(start_color='FF0000', end_color='FF0000',
+            #                                                 fill_type='solid')
+            #             elif ikud_split not in tuple_data_GASPS:
+            #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
+            #                     openpyxl.styles.PatternFill(start_color='878787', end_color='878787',
+            #                                                 fill_type='solid')
+            #
+            #             # обработка колонки преступности - добавляется номер УД к номеру преступления
+            #             if self.flag_edit_prest:
+            #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
+            #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
 
-        # сохраняю файл и закрываю оба
-        # self.wb_file_IC.save(self.file_IC)
-        wb_full.close()
-        wb_half.close()
+            # сохраняю файл и закрываю оба
+            # self.wb_file_IC.save(self.file_IC)
+            wb_full.close()
+            wb_half.close()
 
-        # считаю время заполнения
-        time_finish = time.time()
+            # считаю время заполнения
+            time_finish = time.time()
 
-        # информационное окно о сохранении файлов
-        self.window_info = PyQt5.QtWidgets.QMessageBox()
-        self.window_info.setWindowTitle('Файл')
-        self.window_info.setText(f'Файлы сохранены и закрыты.\n'
-                                 f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
-        self.window_info.exec_()
+            # информационное окно о сохранении файлов
+            self.window_info = PyQt5.QtWidgets.QMessageBox()
+            self.window_info.setWindowTitle('Файл')
+            self.window_info.setText(f'Файлы сохранены и закрыты.\n'
+                                     f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
+            self.window_info.exec_()
 
     # событие - нажатие на кнопку Выход
     def click_on_btn_exit(self):
