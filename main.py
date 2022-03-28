@@ -279,6 +279,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half_s = wb_half.active
 
             # сформированные диапазоны обработки
+            # TODO
+            # сделать определение диапазона для разных файлов
             wb_full_range = wb_full_s[self.range_full_file]
             wb_half_range = wb_half_s[self.range_half_file]
 
@@ -342,6 +344,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             else:
                 # если добавляемых больше, чем отфильтрованных, то добавлять всё из list_filtered_string
                 if count_add_string > count_filter_string:
+                    # TODO
+                    # добавление "всё что есть в list_filtered_string"
+
                     # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = True
 
@@ -359,12 +364,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     # вхождения случайно выбранного из list_filtered_string
                     list_dif = []
                     for str_half in list_half_file:
-                        # print(str_half)
-                        # str_temp = ''
-                        # for cell_half in range(0, 3):  # беру первые три значения где ФИО
-                        #     # преобразую их в безпробельную строку в нижнем регистре
-                        #     str_temp = str_temp + ''.join(str(str_half[cell_half]).lower().split())
-                        # list_dif.append(str_temp)
                         list_dif.append(get_fio_low_case(str_half))
                     tuple_half_file = tuple(list_dif)
 
@@ -372,7 +371,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     flag_add_succes = False
 
                     # выбрать count_add_string штук из list_filtered_string и добавить только их
-                    while flag_add_succes == False:
+                    # while flag_add_succes == False:
+                    while not flag_add_succes:
                         # выбираю случайную строку из подготовленных по специальностям
                         random_string = random.choice(list_filtered_string)
 
@@ -382,13 +382,14 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                         # проверяю есть ли рандомная строка в выбранном списке
                         if compare_string in tuple_half_file:
-                            print(compare_string)
+                            # print(compare_string)
+                            pass
                             # TODO
                         else:
                             count_add_succes += 1
                             if count_add_succes == count_add_string:
                                 flag_add_succes = True
-                            print(count_add_succes)
+                            # print(count_add_succes)
 
                         # compare_string = ''
                         # random_string = ''
