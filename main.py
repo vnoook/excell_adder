@@ -16,6 +16,15 @@ import openpyxl
 import openpyxl.utils
 import random
 
+
+# функция преобразования первых трёх ячеек в ФИО маленького регистра
+def get_fio_low_case(list_in):
+    fio_low_case = ''
+    for counter in range(0, 3):
+        fio_low_case = fio_low_case + ''.join(str(list_in[counter]).lower().split())
+    return fio_low_case
+
+
 # класс главного окна
 class Window(PyQt5.QtWidgets.QMainWindow):
     # описание главного окна
@@ -142,7 +151,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         font.setPointSize(10)
         self.listWidget_specialization.setFont(font)
         self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
-        self.listWidget_specialization.sortItems(True)
+        # self.listWidget_specialization.sortItems(True)
         self.listWidget_specialization.setEnabled(False)
 
         # pushButton_do_fill_data
@@ -275,7 +284,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             # списки всех строк, одной строки прохода, выбранных строк по специальностям
             list_one_string = []  # временная переменная для значения ячейки
-            list_filtered_string = []  # фильтрованные строки из Полного файла которые устраивают выбранным специальностям
+            list_filtered_string = []  # фильтрованные строки из Полного которые устраивают выбранным специальностям
             list_half_file = []  # весь Неполный файл
 
             # счётчик удачных добавлений из выбранных строк
@@ -309,8 +318,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # количество строк "сколько хочу строк" (перевод значения в поле шага 3)
             count_string_want = int(self.lineEdit_max_string.text())
 
-            # количество строк в Неполном файле (-1 потому что верхняя строка это шапка)
-            count_string_half = wb_half_s.max_row -1
+            # количество строк в Неполном файле (- 1 потому что верхняя строка это шапка)
+            count_string_half = wb_half_s.max_row - 1
 
             # сколько нужно добавить строк в Неполный файл
             # разница количества строк между тем, что "сколько хочу строк" и строк уже имеется в файле
@@ -331,7 +340,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
-                # если добавляемых больше, чем отфильтрованых, то добавлять всё из list_filtered_string
+                # если добавляемых больше, чем отфильтрованных, то добавлять всё из list_filtered_string
                 if count_add_string > count_filter_string:
                     # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = True
@@ -346,38 +355,32 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     # флаг добавления "всё что есть в list_filtered_string"
                     flag_add_all = False
 
-                    print(11111)
-
                     # кортеж Неполного файла с первыми тремя ячейками ФИО для проверки
                     # вхождения случайно выбранного из list_filtered_string
                     list_dif = []
-                    # print(f'{list_half_file = }')
-                    # print(f'{len(list_half_file) = }')
                     for str_half in list_half_file:
-                        print(f'{str_half = }')
-                        str_temp = ''
-                        for cell_half in range(0, 3):  # беру первые три значения где ФИО
-                            # преобразую их в безпробельную строку в нижнем регистре
-                            str_temp = str_temp + ''.join(str(str_half[cell_half]).lower().split())
-                        print(f'{str_temp = }')
-                        list_dif.append(str_temp)
+                        # print(str_half)
+                        # str_temp = ''
+                        # for cell_half in range(0, 3):  # беру первые три значения где ФИО
+                        #     # преобразую их в безпробельную строку в нижнем регистре
+                        #     str_temp = str_temp + ''.join(str(str_half[cell_half]).lower().split())
+                        # list_dif.append(str_temp)
+                        list_dif.append(get_fio_low_case(str_half))
                     tuple_half_file = tuple(list_dif)
 
-                    # print(f'{list_dif = }')
-                    # print(f'{tuple_half_file = }')
-
-                    print(22222)
+                    # условие выхода - достижение количества нужный выбранных случайных строк
+                    flag_add_succes = False
 
                     # выбрать count_add_string штук из list_filtered_string и добавить только их
-                    flag_add_succes = False  # условие выхода - достижение количества нужный выбраных случайных строк
                     while flag_add_succes == False:
                         # выбираю случайную строку из подготовленных по специальностям
                         random_string = random.choice(list_filtered_string)
 
                         # преобразую её в безпробельную строку в нижнем регистре
-                        compare_string = ''.join(random_string[0:3]).lower()
+                        # compare_string = ''.join(str(random_string[0:3]).lower().split())
+                        compare_string = get_fio_low_case(random_string)
 
-                        # проверяю есть ли рандомная строка в выбраном списке
+                        # проверяю есть ли рандомная строка в выбранном списке
                         if compare_string in tuple_half_file:
                             print(compare_string)
                             # TODO
@@ -386,6 +389,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                             if count_add_succes == count_add_string:
                                 flag_add_succes = True
                             print(count_add_succes)
+
+                        # compare_string = ''
+                        # random_string = ''
                     else:
                         # информационное окно о сохранении файлов
                         self.window_info = PyQt5.QtWidgets.QMessageBox()
@@ -395,7 +401,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                         self.window_info.exec_()
 
                     print(333333)
-
 
             # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
             #     wb_GASPS_cell_value = 'None'
