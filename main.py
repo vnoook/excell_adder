@@ -43,7 +43,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                             'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
         self.spec_set = set()
         self.range_full_file = 'A2:J11501'
-        self.range_half_file = 'A2:J215'
+        self.range_half_file = 'A2:J256'
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -235,6 +235,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half_s = wb_half.active
 
             # посчитать количество строк и вывести на форме
+            # TODO
+            # сделать правильное добавление - замена только числа количества строк, а не добавления строки с номером
             self.label_full_file.setText(self.label_full_file.text() + f' (строк в файле {str(wb_full_s.max_row -1)})')
             self.label_full_file.adjustSize()
             self.label_half_file.setText(self.label_half_file.text() + f' (строк в файле {str(wb_half_s.max_row -1)})')
