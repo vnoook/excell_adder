@@ -17,7 +17,7 @@ import openpyxl.utils
 import random
 
 
-# функция преобразования первых трёх ячеек в ФИО маленького регистра
+# функция преобразования первых трёх ячеек в "ФИО маленького регистра"
 def get_fio_low_case(list_in):
     fio_low_case = ''
     for counter in range(0, 3):
@@ -36,12 +36,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.info_path_open_file = ''
         self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
         self.text_empty_path_file = 'файл пока не выбран'
-        self.file_full = ''
-        self.file_half = ''
+
+        # TODO
+        # заменить эту переменную на пустоту
         self.max_string = '260'
-        self.header_list = ('Фамилия', 'Имя', 'Отчество', 'Email', 'Дата рождения(дд.мм.гггг)', 'Телефон', 'Город',
-                            'Основное место работы(сокращения допускаются)', 'Должность', 'Специальность')
-        self.spec_set = set()
+
+        # TODO
+        # посчитать автоматом диапазоны
         self.range_full_file = 'A2:J11501'
         self.range_half_file = 'A2:J256'
 
@@ -49,11 +50,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.setWindowTitle('Добор в эксель')
         self.setGeometry(600, 200, 700, 610)
 
-        # объекты на главном окне
+        # объекты на форме
         # label_full_file
         self.label_full_file = PyQt5.QtWidgets.QLabel(self)
         self.label_full_file.setObjectName('label_full_file')
-        self.label_full_file.setText('1. Выберите полный файл')
+        self.label_full_file.setText('1. Выберите Полный файл')
         self.label_full_file.setGeometry(PyQt5.QtCore.QRect(10, 10, 150, 40))
         font = PyQt5.QtGui.QFont()
         font.setPointSize(12)
@@ -151,7 +152,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         font.setPointSize(10)
         self.listWidget_specialization.setFont(font)
         self.listWidget_specialization.setResizeMode(PyQt5.QtWidgets.QListView.Adjust)
-        # self.listWidget_specialization.sortItems(True)
         self.listWidget_specialization.setEnabled(False)
 
         # pushButton_do_fill_data
@@ -220,12 +220,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             if self.text_empty_path_file not in (self.label_path_full_file.text(), self.label_path_half_file.text()):
                 self.pushButton_do_fill_data.setEnabled(True)
                 self.listWidget_specialization.setEnabled(True)
-                self.listWidget_specialization.clear()
-        # если выбранные файлы одинаковые
         else:
+            # если выбранные файлы одинаковые
             self.pushButton_do_fill_data.setEnabled(False)
             self.listWidget_specialization.setEnabled(False)
-            self.listWidget_specialization.clear()
+
+        # очистка списка специализаций при любой смене файла
+        self.listWidget_specialization.clear()
 
         if self.listWidget_specialization.isEnabled():
             # открыть файлы Полный и Неполный, и выбрать листы
@@ -246,27 +247,28 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_full_range = wb_full_s[self.range_full_file]
 
             # множество для хранения специальностей
-            self.spec_set = set()
+            specialization_set = set()
 
-            # цикл прохода по полному файлу
+            # цикл прохода по полному файлу и взятие непустых специальностей
             for row_in_range_full in wb_full_range:
                 if row_in_range_full[-1].value:
-                    self.spec_set.add(row_in_range_full[-1].value)
+                    specialization_set.add(row_in_range_full[-1].value)
 
-            self.listWidget_specialization.addItems(sorted(self.spec_set, reverse=False))
+            # добавление в список отсортированных специальностей
+            self.listWidget_specialization.addItems(sorted(specialization_set, reverse=False))
             wb_full.close()
             wb_half.close()
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
         # выбор выбранных строк в списке специальностей
-        spec_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
+        specialization_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
 
         # проверка на количество выбранных строк в listWidget_specialization
-        if len(spec_selected) == 0:
+        if len(specialization_selected) == 0:
             # информационное окно о сохранении файлов
             self.window_info = PyQt5.QtWidgets.QMessageBox()
-            self.window_info.setWindowTitle('Число')
+            self.window_info.setWindowTitle('Выберите специальности')
             self.window_info.setText(f'В списке специальностей ничего не выбрано,\n'
                                      f'выберите хотя бы одну строку')
             self.window_info.exec_()
@@ -282,19 +284,19 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             # сформированные диапазоны обработки
             # TODO
-            # сделать определение диапазона для разных файлов
+            # сделать определение диапазона автоматически
             wb_full_range = wb_full_s[self.range_full_file]
             wb_half_range = wb_half_s[self.range_half_file]
 
-            # списки всех строк, одной строки прохода, выбранных строк по специальностям
-            list_one_string = []  # временная переменная для значения ячейки
+            # список одной строки прохода, список выбранных строк по специальностям, списки всех строк еполного файла
+            list_one_string = []  # временная переменная
             list_filtered_string = []  # фильтрованные строки из Полного которые устраивают выбранным специальностям
             list_half_file = []  # весь Неполный файл
 
-            # счётчик удачных добавлений из выбранных строк
+            # счётчик удачных добавлений в Неполный из выбранных строк
             count_add_succes = 0
 
-            # цикл прохода по полному файлу, для заполнения list_filtered_string фильтрованных из spec_selected
+            # цикл прохода Полного файла, заполнение list_filtered_string фильтрованных из specialization_selected
             for row_in_range_full in wb_full_range:
                 # чищу список для временной строки
                 list_one_string = []
@@ -304,10 +306,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     list_one_string.append(cell_in_row_full.value)
 
                 # если последнее значение в списке специальностей, то добавляю его в список выбранных из полного файла
-                if list_one_string[-1] in spec_selected:
+                if list_one_string[-1] in specialization_selected:
                     list_filtered_string.append(list_one_string)
 
-            # цикл прохода по Неполному файлу
+            # цикл прохода Неполного файла
             for row_in_range_half in wb_half_range:
                 # чищу список для временной строки
                 list_one_string = []
@@ -322,11 +324,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # количество строк "сколько хочу строк" (перевод значения в поле шага 3)
             count_string_want = int(self.lineEdit_max_string.text())
 
-            # количество строк в Неполном файле (- 1 потому что верхняя строка это шапка)
+            # количество строк в Неполном файле (-1 потому что верхняя строка это шапка)
             count_string_half = wb_half_s.max_row - 1
 
             # сколько нужно добавить строк в Неполный файл
-            # разница количества строк между тем, что "сколько хочу строк" и строк уже имеется в файле
             count_add_string = count_string_want - count_string_half
 
             # количество строк в отфильтрованном списке
@@ -335,6 +336,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # количество строк которых будет реально добавлены в Неполный файл
             count_real_data_add = count_filter_string - count_add_string
 
+            # добавление строк в Неполный файл
             # если количество строк в Неполном меньше, чем хочется, то добавить разницу строк
             if count_add_string <= 0:
                 # информационное окно
@@ -344,8 +346,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
-                # если добавляемых больше, чем отфильтрованных, то добавлять всё из list_filtered_string
                 if count_add_string > count_filter_string:
+                    # если добавляемых больше, чем отфильтрованных, то добавлять всё из list_filtered_string
                     # TODO
                     # добавление "всё что есть в list_filtered_string"
 
