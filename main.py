@@ -284,6 +284,22 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
             # сформированные диапазоны обработки
             # TODO
+            # self.range_full_file = 'A2:J11501'
+            # self.range_half_file = 'A2:J256'
+            print(f'{wb_full_s.min_column} {wb_full_s.min_row} {wb_full_s.max_column} {wb_full_s.max_row}')
+            # wb_full_s.min_column
+            # wb_full_s.min_row
+            # wb_full_s.max_column
+            # wb_full_s.max_row
+            #
+            # wb_half_s.min_column
+            # wb_half_s.min_row
+            # wb_half_s.max_column
+            # wb_half_s.max_row
+            # openpyxl.utils.cell.coordinate_from_string(self.wb_s.cell(1, col_).coordinate)[0]
+            # file_xlsx_s.column_dimensions[openpyxl.utils.get_column_letter(col)].width
+
+
             # сделать определение диапазона автоматически
             wb_full_range = wb_full_s[self.range_full_file]
             wb_half_range = wb_half_s[self.range_half_file]
@@ -343,6 +359,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 self.window_info = PyQt5.QtWidgets.QMessageBox()
                 self.window_info.setWindowTitle('Строки')
                 self.window_info.setText(f'Количество строк в Неполном файле больше или одинаково,\n'
+                                         f'хочется чтобы было {count_string_want}\n'
+                                         f'надо добавить {count_add_string}\n'
+                                         f'могу выбрать из {count_filter_string}\n'
                                          f'чем в ПУНКТЕ 3, их разница равна {count_add_string}')
                 self.window_info.exec_()
             else:
@@ -351,19 +370,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     # TODO
                     # добавление "всё что есть в list_filtered_string"
 
-                    # флаг добавления "всё что есть в list_filtered_string"
-                    flag_add_all = True
-
                     # информационное окно
                     self.window_info = PyQt5.QtWidgets.QMessageBox()
                     self.window_info.setWindowTitle('Строки')
                     self.window_info.setText(f'Количество строк в Полном файле по этим специальностям\n'
-                                             f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}')
+                                             f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}\n'
+                                             f'хочется чтобы было {count_string_want}\n'
+                                             f'надо добавить {count_add_string}\n'
+                                             f'могу выбрать из {count_filter_string}\n'
+                                             f'добавляю "всё что есть"')
                     self.window_info.exec_()
                 else:
-                    # флаг добавления "всё что есть в list_filtered_string"
-                    flag_add_all = False
-
                     # кортеж Неполного файла с первыми тремя ячейками ФИО для проверки
                     # вхождения случайно выбранного из list_filtered_string
                     list_dif = []
@@ -399,18 +416,19 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                             count_add_succes += 1
                             print(f'счётчик чистых добавлений в Неполный файл {count_add_succes = }')
 
-                        if count_add_succes == count_add_string:
-                            flag_add_succes = True
+                            if count_add_succes == count_add_string:
+                                flag_add_succes = True
 
                     else:
-                        # информационное окно о сохранении файлов
+                        # информационное окно о нехватке данных
                         self.window_info = PyQt5.QtWidgets.QMessageBox()
                         self.window_info.setWindowTitle('Строки')
                         self.window_info.setText(f'Не хватило данных для добавления,\n'
+                                                 f'хочется чтобы было {count_string_want}\n'
+                                                 f'надо добавить {count_add_string}\n'
+                                                 f'могу выбрать из {count_filter_string}\n'
                                                  f'добавлено в файл сколько было.')
                         self.window_info.exec_()
-
-                    print('*'*20)
 
             # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
             #     wb_GASPS_cell_value = 'None'
@@ -461,7 +479,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
             #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
 
-            pass
+            print('*' * 20)
 
             # сохраняю файл и закрываю оба
             # self.wb_file_IC.save(self.file_IC)
