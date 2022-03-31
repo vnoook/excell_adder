@@ -375,28 +375,33 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     flag_add_succes = False
 
                     # выбрать count_add_string штук из list_filtered_string и добавить только их
-                    # while flag_add_succes == False:
-                    while not flag_add_succes:
+                    # while not flag_add_succes:
+                    print(f'список фильтрованных {list_filtered_string = }')
+                    while flag_add_succes == False:
+                        print()
+                        print(f'нужно добавить {count_add_string = } строк')
                         # выбираю случайную строку из подготовленных по специальностям
                         random_string = random.choice(list_filtered_string)
+                        print(f'беру случайную строку из фильтрованных {random_string = }')
 
-                        # преобразую её в безпробельную строку в нижнем регистре
-                        # compare_string = ''.join(str(random_string[0:3]).lower().split())
+                        # преобразую её в безпробельную строку с ФИО в нижнем регистре
                         compare_string = get_fio_low_case(random_string)
+                        print(f'её ФИО {compare_string = }')
 
-                        # проверяю есть ли рандомная строка в выбранном списке
+                        # проверяю есть ли ФИО рандомной строки в фильтрованном кортеже c ФИО
                         if compare_string in tuple_half_file:
-                            # print(compare_string)
+                            print(f'строка {compare_string = } найдена в Неполном файле')
                             pass
+
                             # TODO
                         else:
+                            print(f'строка {compare_string = } не найдена в Неполном файле')
                             count_add_succes += 1
-                            if count_add_succes == count_add_string:
-                                flag_add_succes = True
-                            # print(count_add_succes)
+                            print(f'счётчик чистых добавлений в Неполный файл {count_add_succes = }')
 
-                        # compare_string = ''
-                        # random_string = ''
+                        if count_add_succes == count_add_string:
+                            flag_add_succes = True
+
                     else:
                         # информационное окно о сохранении файлов
                         self.window_info = PyQt5.QtWidgets.QMessageBox()
@@ -405,7 +410,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                                  f'добавлено в файл сколько было.')
                         self.window_info.exec_()
 
-                    print(333333)
+                    print('*'*20)
 
             # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
             #     wb_GASPS_cell_value = 'None'
