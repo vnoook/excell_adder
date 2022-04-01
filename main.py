@@ -43,8 +43,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # посчитать автоматом диапазоны
-        self.range_full_file = 'A2:J11501'
-        self.range_half_file = 'A2:J256'
+        # self.range_full_file = 'A2:J11501'
+        # self.range_half_file = 'A2:J256'
+        self.range_all_files = 'A2:'
 
         # главное окно, надпись на нём и размеры
         self.setWindowTitle('Добор в эксель')
@@ -244,7 +245,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             self.label_half_file.adjustSize()
 
             # сформированные диапазоны обработки
-            wb_full_range = wb_full_s[self.range_full_file]
+            range_full_file = self.range_all_files + wb_full_s.cell(wb_full_s.max_row, wb_full_s.max_column).coordinate
+            wb_full_range = wb_full_s[range_full_file]
 
             # множество для хранения специальностей
             specialization_set = set()
@@ -283,26 +285,10 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half_s = wb_half.active
 
             # сформированные диапазоны обработки
-            # TODO
-            # self.range_full_file = 'A2:J11501'
-            # self.range_half_file = 'A2:J256'
-            print(f'{wb_full_s.min_column} {wb_full_s.min_row} {wb_full_s.max_column} {wb_full_s.max_row}')
-            # wb_full_s.min_column
-            # wb_full_s.min_row
-            # wb_full_s.max_column
-            # wb_full_s.max_row
-            #
-            # wb_half_s.min_column
-            # wb_half_s.min_row
-            # wb_half_s.max_column
-            # wb_half_s.max_row
-            # openpyxl.utils.cell.coordinate_from_string(self.wb_s.cell(1, col_).coordinate)[0]
-            # file_xlsx_s.column_dimensions[openpyxl.utils.get_column_letter(col)].width
-
-
-            # сделать определение диапазона автоматически
-            wb_full_range = wb_full_s[self.range_full_file]
-            wb_half_range = wb_half_s[self.range_half_file]
+            range_full_file = self.range_all_files + wb_full_s.cell(wb_full_s.max_row, wb_full_s.max_column).coordinate
+            range_half_file = self.range_all_files + wb_half_s.cell(wb_half_s.max_row, wb_half_s.max_column).coordinate
+            wb_full_range = wb_full_s[range_full_file]
+            wb_half_range = wb_half_s[range_half_file]
 
             # список одной строки прохода, список выбранных строк по специальностям, списки всех строк еполного файла
             list_one_string = []  # временная переменная
@@ -393,7 +379,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                     # выбрать count_add_string штук из list_filtered_string и добавить только их
                     # while not flag_add_succes:
-                    print(f'список фильтрованных {list_filtered_string = }')
+                    # print(f'список фильтрованных {list_filtered_string = }')
                     while flag_add_succes == False:
                         print()
                         print(f'нужно добавить {count_add_string = } строк')
