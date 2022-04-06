@@ -41,10 +41,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # заменить эту переменную на пустоту
         self.max_string = '260'
 
-        # TODO
-        # посчитать автоматом диапазоны
-        # self.range_full_file = 'A2:J11501'
-        # self.range_half_file = 'A2:J256'
+        # начало диапазона поиска строк в обоих файлах
         self.range_all_files = 'A2:'
 
         # главное окно, надпись на нём и размеры
@@ -182,7 +179,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # определение какая кнопка выбора файла нажата
         if self.sender().objectName() == self.toolButton_select_full_file.objectName():
-            self.info_for_open_file = 'Выберите полный файл формата Excel, версии старше 2007 года (.XLSX)'
+            self.info_for_open_file = 'Выберите Полный файл формата Excel, версии старше 2007 года (.XLSX)'
         elif self.sender().objectName() == self.toolButton_select_half_file.objectName():
             self.info_for_open_file = 'Выберите Неполный файл формата Excel, версии старше 2007 года (.XLSX)'
 
@@ -263,6 +260,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
+        # TODO
+        # сделать проверку lineEdit_max_string на число
+
         # выбор выбранных строк в списке специальностей
         specialization_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
 
