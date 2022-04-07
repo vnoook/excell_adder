@@ -38,7 +38,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.text_empty_path_file = 'файл пока не выбран'
 
         # TODO
-        # заменить эту переменную на пустоту
+        # заменить эту переменную на 0 или пустоту
         self.max_string = '260'
 
         # начало диапазона поиска строк в обоих файлах
@@ -348,17 +348,16 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 self.window_info = PyQt5.QtWidgets.QMessageBox()
                 self.window_info.setWindowTitle('Строки')
                 self.window_info.setText(f'Количество строк в Неполном файле больше или одинаково,\n'
+                                         f'чем в ПУНКТЕ 3, их разница равна {count_string_add}\n'
+                                         f'\n'
                                          f'хочется чтобы было {count_string_want}\n'
                                          f'надо добавить {count_string_add}\n'
-                                         f'могу выбрать из {count_filter_string}\n'
-                                         f'чем в ПУНКТЕ 3, их разница равна {count_string_add}')
+                                         f'могу выбрать из {count_filter_string}'
+                                         )
                 self.window_info.exec_()
             else:
                 if count_string_add > count_filter_string:
                     # если добавляемых больше, чем отфильтрованных, то добавлять всё из list_filtered_string
-                    # TODO
-                    # добавление "всё что есть в list_filtered_string"
-
                     # информационное окно
                     self.window_info = PyQt5.QtWidgets.QMessageBox()
                     self.window_info.setWindowTitle('Строки')
@@ -369,20 +368,24 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                              f'могу выбрать из {count_filter_string}\n'
                                              f'добавляю "всё что есть"')
                     self.window_info.exec_()
+
+                    # TODO
+                    # добавление "всё что есть в list_filtered_string"
+
                 else:
-                    # кортеж Неполного файла с первыми тремя ячейками ФИО для проверки
-                    # вхождения случайно выбранного из list_filtered_string
+                    # кортеж из Неполного файла с первыми тремя ячейками ФИО
+                    # для проверки вхождения случайно выбранного из list_filtered_string
                     list_dif = []
                     for str_half in list_half_file:
                         list_dif.append(get_fio_low_case(str_half))
                     tuple_half_file = tuple(list_dif)
 
-                    # условие выхода - достижение количества нужный выбранных случайных строк
+                    # условие выхода - достижение количества нужных выбранных случайных строк
                     flag_add_succes = False
 
                     # выбрать count_string_add штук из list_filtered_string и добавить только их
-                    # while not flag_add_succes:
                     # print(f'список фильтрованных {list_filtered_string = }')
+                    # while not flag_add_succes:
                     while flag_add_succes == False:
                         # print()
                         # print(f'нужно добавить {count_string_add = } строк')
