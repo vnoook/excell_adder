@@ -296,6 +296,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             list_filtered_string = []  # фильтрованные строки из Полного которые устраивают выбранным специальностям
             list_half_file = []  # весь Неполный файл
             list_for_add = []  # список выбранных для добавления в Неполный файл
+            tuple_half_file = ()  # кортеж для хранения ФИО из Неполного файла
 
             # счётчик удачных добавлений в Неполный из выбранных строк
             count_add_succes = 0
@@ -311,6 +312,9 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                 # если последнее значение в списке специальностей, то добавляю его в список выбранных из Полного файла
                 if list_one_string[-1] in specialization_selected:
+                    print(list_one_string)
+                    print(get_fio_low_case(list_one_string))
+                    print()
                     list_filtered_string.append(list_one_string)
 
             # заполнение list_half_file Неполного файла
@@ -351,6 +355,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                                          f'чем в ПУНКТЕ 3, их разница равна {count_string_add}\n'
                                          f'\n'
                                          f'хочется чтобы было {count_string_want}\n'
+                                         f'сейчас в файле {count_string_half}\n'
                                          f'надо добавить {count_string_add}\n'
                                          f'могу выбрать из {count_filter_string}'
                                          )
@@ -364,6 +369,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     self.window_info.setText(f'Количество строк в Полном файле по этим специальностям\n'
                                              f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}\n'
                                              f'хочется чтобы было {count_string_want}\n'
+                                             f'сейчас в файле {count_string_half}\n'
                                              f'надо добавить {count_string_add}\n'
                                              f'могу выбрать из {count_filter_string}\n'
                                              f'добавляю "всё что есть"')
@@ -380,45 +386,73 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                         list_dif.append(get_fio_low_case(str_half))
                     tuple_half_file = tuple(list_dif)
 
+
+
+
+                    # print(f'{count_string_add = } - {len(list_filtered_string)}')
+                    list_for_add = random.sample(list_filtered_string, count_string_add)
+                    # print()
+                    # print(f'{list_for_add = }', sep='\n')
+                    # print()
+                    # print(f'{tuple_half_file = }', sep='\n')
+                    # print()
+                    for str1 in list_for_add:
+                        # print(get_fio_low_case(str1))
+                        if get_fio_low_case(str1) in tuple_half_file:
+                            print(get_fio_low_case(str1))
+                        else:
+                            pass
+                            # print(222)
+
+                    exit()
+
+
+
+
+
+
+
+
+
                     # условие выхода - достижение количества нужных выбранных случайных строк
                     flag_add_succes = False
 
                     # выбрать count_string_add штук из list_filtered_string и добавить только их
-                    # print(f'список фильтрованных {list_filtered_string = }')
-                    # while not flag_add_succes:
-                    while flag_add_succes == False:
+                    # while flag_add_succes == False:
+                    while not flag_add_succes:
                         # print()
-                        # print(f'нужно добавить {count_string_add = } строк')
                         # выбираю случайную строку из подготовленных по специальностям
                         random_string = random.choice(list_filtered_string)
-                        # print(f'беру случайную строку из фильтрованных {random_string = }')
 
                         # преобразую её в безпробельную строку с ФИО в нижнем регистре
                         compare_string = get_fio_low_case(random_string)
-                        # print(f'её ФИО {compare_string = }')
 
                         # проверяю есть ли ФИО рандомной строки в фильтрованном кортеже c ФИО
                         if compare_string in tuple_half_file:
-                            # print(f'строка {compare_string = } найдена в Неполном файле')
                             pass
                             # TODO
                         else:
-                            # print(f'строка {compare_string = } не найдена в Неполном файле')
                             count_add_succes += 1
-                            # print(f'счётчик чистых добавлений в Неполный файл {count_add_succes = }')
 
                             if count_add_succes == count_string_add:
                                 flag_add_succes = True
 
+                        # считаю время заполнения
+                        time_finish = time.time()
+
                     else:
+                        # TODO
+                        # убрать это сообщение
+
                         # информационное окно о нехватке данных
                         self.window_info = PyQt5.QtWidgets.QMessageBox()
                         self.window_info.setWindowTitle('Строки')
                         self.window_info.setText(f'Не хватило данных для добавления,\n'
                                                  f'хочется чтобы было {count_string_want}\n'
+                                                 f'сейчас в файле {count_string_half}\n'
                                                  f'надо добавить {count_string_add}\n'
                                                  f'могу выбрать из {count_filter_string}\n'
-                                                 f'добавлено в файл сколько было.')
+                                                 f'добавлено в файл "сколько было".')
                         self.window_info.exec_()
 
             print('*' * 20)
@@ -478,9 +512,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # self.wb_file_IC.save(self.file_IC)
             wb_full.close()
             wb_half.close()
-
-            # считаю время заполнения
-            time_finish = time.time()
 
             # информационное окно о сохранении файлов
             self.window_info = PyQt5.QtWidgets.QMessageBox()
