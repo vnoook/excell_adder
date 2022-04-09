@@ -39,7 +39,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # заменить эту переменную на 0 или пустоту
-        self.max_string = '260'
+        self.max_string = '218'
 
         # начало диапазона поиска строк в обоих файлах
         self.range_all_files = 'A2:'
@@ -295,7 +295,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             list_one_string = []  # временная переменная
             list_half_file = []  # весь Неполный файл
             list_filtered_string = []  # фильтрованные строки из Полного которые устраивают выбранным специальностям
-            list_for_add = []  # список выбранных для добавления в Неполный файл
+            list_for_add = []  # список выбранных из фильтрованных для добавления в Неполный файл
             tuple_half_file = ()  # кортеж для хранения ФИО из Неполного файла
 
             # счётчик удачных добавлений в Неполный из выбранных строк
@@ -388,6 +388,17 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                     # TODO
                     # добавление в эксель
+                    # последняя строка в Неполном
+                    wb_half_s.max_row
+                    wb_half_s.max_column
+                    # +2 потому что один за прошлый вычет, а один на следующую строчку
+                    string_half_begin = (count_string_half + 1) + 1
+                    string_half_end = (count_string_half + 1) + len(list_for_add)
+                    print(f'{string_half_begin = }\n'
+                          f'{string_half_end = }\n')
+                    for string_add in range(string_half_begin, string_half_end+1):
+                        print(string_add)
+
 
                     # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
                     #     wb_GASPS_cell_value = 'None'
