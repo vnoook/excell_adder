@@ -39,7 +39,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # TODO
         # заменить эту переменную на 0 или пустоту
-        self.max_string = '218'
+        self.max_string = '260'
 
         # начало диапазона поиска строк в обоих файлах
         self.range_all_files = 'A2:'
@@ -383,21 +383,43 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 else:
                     # выбираю count_string_add штук в список случайных строк из фильтрованного
                     list_for_add = random.sample(list_filtered_string, count_string_add)
-                    print(*list_for_add, sep='\n')
-                    print()
+                    # print(*list_for_add, sep='\n')
+                    # print()
 
-                    # TODO
-                    # добавление в эксель
-                    # последняя строка в Неполном
-                    wb_half_s.max_row
-                    wb_half_s.max_column
-                    # +2 потому что один за прошлый вычет, а один на следующую строчку
+                    # последняя строка в Неполном +2 потому, что один за прошлый вычет, а один на следующую строчку
                     string_half_begin = (count_string_half + 1) + 1
                     string_half_end = (count_string_half + 1) + len(list_for_add)
-                    print(f'{string_half_begin = }\n'
-                          f'{string_half_end = }\n')
-                    for string_add in range(string_half_begin, string_half_end+1):
-                        print(string_add)
+                    # print(f'{string_half_begin = }\n'
+                    #       f'{string_half_end = }\n')
+
+                    # TODO
+                    # добавление данных в эксель
+                    for string_list_for_add in list_for_add:
+                        print()
+                        print(string_list_for_add)
+                        # # проход по строкам
+                        # for row_add in range(string_half_begin, string_half_end+1):
+                        #     # print(row_add)
+                        #
+                        #     # проход по колонкам
+                        #     for col_add in range(1, wb_half_s.max_column+1):
+                        #         print(row_add, col_add, end=' - ')
+
+                        wb_half_s.append(string_list_for_add)
+                        print(self.label_path_half_file.text())
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
                     # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
@@ -451,6 +473,13 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                     print()
 
+                    # сохраняю файл и закрываю оба
+                    # TODO
+                    # вычленить название файла из self.label_path_half_file.text()
+                    wb_half.save(self.label_path_half_file.text())
+                    wb_full.close()
+                    wb_half.close()
+
                     # считаю время заполнения
                     time_finish = time.time()
 
@@ -460,12 +489,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     self.window_info.setText(f'Файлы сохранены и закрыты.\n'
                                              f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
                     self.window_info.exec_()
-
-            # сохраняю файл и закрываю оба
-            # wb_half.save()
-            wb_full.close()
-            wb_half.close()
-
 
     # событие - нажатие на кнопку Выход
     @staticmethod
