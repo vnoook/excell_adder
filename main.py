@@ -383,95 +383,15 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                 else:
                     # выбираю count_string_add штук в список случайных строк из фильтрованного
                     list_for_add = random.sample(list_filtered_string, count_string_add)
-                    # print(*list_for_add, sep='\n')
-                    # print()
 
                     # последняя строка в Неполном +2 потому, что один за прошлый вычет, а один на следующую строчку
                     string_half_begin = (count_string_half + 1) + 1
                     string_half_end = (count_string_half + 1) + len(list_for_add)
-                    # print(f'{string_half_begin = }\n'
-                    #       f'{string_half_end = }\n')
 
                     # TODO
                     # добавление данных в эксель
                     for string_list_for_add in list_for_add:
-                        print()
-                        print(string_list_for_add)
-                        # # проход по строкам
-                        # for row_add in range(string_half_begin, string_half_end+1):
-                        #     # print(row_add)
-                        #
-                        #     # проход по колонкам
-                        #     for col_add in range(1, wb_half_s.max_column+1):
-                        #         print(row_add, col_add, end=' - ')
-
                         wb_half_s.append(string_list_for_add)
-                        print(self.label_path_half_file.text())
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    # if wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value == None:
-                    #     wb_GASPS_cell_value = 'None'
-                    # else:
-                    #     wb_GASPS_cell_value = str(wb_GASPS_cells_range[indexR_GASPS][indexC_GASPS].value)
-                    #
-                    # for ikud in wb_GASPS_cell_value.split(";"):
-                    #     set_data_GASPS.add(ikud.strip().replace('.', ''))
-                    #
-                    # tuple_data_GASPS = tuple(set_data_GASPS)
-
-                    # # обработка файла ИЦ
-                    # for row_in_range_IC in wb_IC_cells_range:
-                    #     for cell_in_row_IC in row_in_range_IC:
-                    #         # определение адреса ячейки из области данных
-                    #         indexR_IC = wb_IC_cells_range.index(row_in_range_IC)
-                    #         indexC_IC = row_in_range_IC.index(cell_in_row_IC)
-                    #
-                    #         # получение координаты и значения ячейки IC
-                    #         if wb_IC_cells_range[indexR_IC][indexC_IC].value == None:
-                    #             wb_IC_cell_value = 'None'
-                    #         else:
-                    #             wb_IC_cell_value = str(wb_IC_cells_range[indexR_IC][indexC_IC].value)
-                    #
-                    #         # очистка множества для номеров дел из колонки и
-                    #         # разбивка строки на несколько номеров дел если есть ";"
-                    #         set_data_IC.clear()
-                    #         for ikud in wb_IC_cell_value.split(";"):
-                    #             set_data_IC.add(ikud.strip().replace('.', ''))
-                    #
-                    #         tuple_data_IC = tuple(set_data_IC)
-                    #
-                    #         # раскраска колонок УД в ИЦ файле
-                    #         for ikud in wb_IC_cell_value.split(";"):
-                    #             ikud_split = ikud.strip().replace('.', '').replace(' ', '')
-                    #
-                    #             if (ikud_split in tuple_data_GASPS) and (ikud_split in tuple_data_IC):
-                    #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-                    #                     openpyxl.styles.PatternFill(start_color='FF0000', end_color='FF0000',
-                    #                                                 fill_type='solid')
-                    #             elif ikud_split not in tuple_data_GASPS:
-                    #                 wb_IC_cells_range[indexR_IC][indexC_IC].fill =\
-                    #                     openpyxl.styles.PatternFill(start_color='878787', end_color='878787',
-                    #                                                 fill_type='solid')
-                    #
-                    #             # обработка колонки преступности - добавляется номер УД к номеру преступления
-                    #             if self.flag_edit_prest:
-                    #                 wb_IC_cells_range_prest[indexR_IC][indexC_IC].value =\
-                    #                     ikud_split + wb_IC_cells_range_prest[indexR_IC][indexC_IC].value
-
-                    print()
 
                     # сохраняю файл и закрываю оба
                     # TODO
