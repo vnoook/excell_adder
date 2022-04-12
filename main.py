@@ -6,6 +6,7 @@
 # pyinstaller -F -w main.py
 # ...
 
+import os
 import sys
 import time
 import PyQt5
@@ -394,9 +395,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                         wb_half_s.append(string_list_for_add)
 
                     # сохраняю файл и закрываю оба
-                    # TODO
-                    # вычленить название файла из self.label_path_half_file.text()
-                    wb_half.save(self.label_path_half_file.text())
+                    filename_half = os.path.split(self.label_path_half_file.text())[1]
+                    wb_half.save(filename_half)
                     wb_full.close()
                     wb_half.close()
 
