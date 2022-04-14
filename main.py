@@ -38,9 +38,8 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.info_extention_open_file = 'Файлы Excel xlsx (*.xlsx)'
         self.text_empty_path_file = 'файл пока не выбран'
 
-        # TODO
-        # заменить эту переменную на 0 или пустоту
-        self.max_string = '260'
+        # переменная 0, пока не посчитано количество строк в Неполном файле
+        self.max_string = '0'
 
         # начало диапазона поиска строк в обоих файлах
         self.range_all_files = 'A2:'
@@ -223,6 +222,12 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # если выбранные файлы одинаковые
             self.pushButton_do_fill_data.setEnabled(False)
             self.listWidget_specialization.setEnabled(False)
+            self.label_full_file.setText(f'1. Выберите Полный файл')
+            self.label_full_file.adjustSize()
+            self.label_half_file.setText(f'2. Выберите Неполный файл')
+            self.label_half_file.adjustSize()
+            self.lineEdit_max_string.setText(self.max_string)
+
 
         # очистка списка специализаций при любой смене файла
         self.listWidget_specialization.clear()
@@ -236,12 +241,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half_s = wb_half.active
 
             # посчитать количество строк и вывести на форме
-            # TODO
-            # сделать правильное добавление - замена только числа количества строк, а не добавления строки с номером
-            self.label_full_file.setText(self.label_full_file.text() + f' (строк в файле {str(wb_full_s.max_row -1)})')
+            self.label_full_file.setText(f'1. Выберите Полный файл (строк в файле {str(wb_full_s.max_row -1)})')
             self.label_full_file.adjustSize()
-            self.label_half_file.setText(self.label_half_file.text() + f' (строк в файле {str(wb_half_s.max_row -1)})')
+            self.label_half_file.setText(f'2. Выберите Неполный файл (строк в файле {str(wb_half_s.max_row -1)})')
             self.label_half_file.adjustSize()
+            self.lineEdit_max_string.setText(str(wb_half_s.max_row -1))
 
             # сформированные диапазоны обработки
             range_full_file = self.range_all_files + wb_full_s.cell(wb_full_s.max_row, wb_full_s.max_column).coordinate
@@ -264,6 +268,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
     def do_fill_data(self):
         # TODO
         # сделать проверку lineEdit_max_string на число
+        print()
+        print(self.lineEdit_max_string.text())
+        print(self.lineEdit_max_string.text().isdecimal())
+        print(self.lineEdit_max_string.text().isdigit())
+        print()
 
         # выбор выбранных строк в списке специальностей
         specialization_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
@@ -389,7 +398,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     string_half_begin = (count_string_half + 1) + 1
                     string_half_end = (count_string_half + 1) + len(list_for_add)
 
-                    # TODO
                     # добавление данных в эксель
                     for string_list_for_add in list_for_add:
                         wb_half_s.append(string_list_for_add)
