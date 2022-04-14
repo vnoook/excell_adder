@@ -1,3 +1,6 @@
+# TODO
+# сделать проверку на пустоту lineEdit_max_string
+
 # ...
 # INSTALL
 # pip install openpyxl
