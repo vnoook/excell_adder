@@ -129,6 +129,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         self.lineEdit_max_string.setGeometry(PyQt5.QtCore.QRect(10, 160, 90, 20))
         self.lineEdit_max_string.setClearButtonEnabled(True)
         self.lineEdit_max_string.setToolTip(self.lineEdit_max_string.objectName())
+        self.lineEdit_max_string.textEdited.connect(self.check_digit)
 
         # label_spec_string
         self.label_spec_string = PyQt5.QtWidgets.QLabel(self)
@@ -264,16 +265,27 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_full.close()
             wb_half.close()
 
+    def check_digit(self, string_data):
+        # сделать проверку lineEdit_max_string на число
+        flag_digit = None
+
+        if string_data.isdigit():
+            flag_digit = True
+        else:
+            flag_digit = False
+
+            # информационное окно
+            self.window_info = PyQt5.QtWidgets.QMessageBox()
+            self.window_info.setWindowTitle('Строки')
+            self.window_info.setText(f'Вводите только цифры!')
+            self.window_info.exec_()
+
+            self.lineEdit_max_string.setText('0')
+
+        return flag_digit
+
     # событие - нажатие на кнопку заполнения файла
     def do_fill_data(self):
-        # TODO
-        # сделать проверку lineEdit_max_string на число
-        print()
-        print(self.lineEdit_max_string.text())
-        print(self.lineEdit_max_string.text().isdecimal())
-        print(self.lineEdit_max_string.text().isdigit())
-        print()
-
         # выбор выбранных строк в списке специальностей
         specialization_selected = [item.text() for item in self.listWidget_specialization.selectedItems()]
 
