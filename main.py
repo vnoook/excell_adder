@@ -229,7 +229,6 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             self.label_half_file.adjustSize()
             self.lineEdit_max_string.setText(self.max_string)
 
-
         # очистка списка специализаций при любой смене файла
         self.listWidget_specialization.clear()
 
@@ -242,11 +241,11 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half_s = wb_half.active
 
             # посчитать количество строк и вывести на форме
-            self.label_full_file.setText(f'1. Выберите Полный файл (строк в файле {str(wb_full_s.max_row -1)})')
+            self.label_full_file.setText(f'1. Выберите Полный файл (строк в файле {str(wb_full_s.max_row - 1)})')
             self.label_full_file.adjustSize()
-            self.label_half_file.setText(f'2. Выберите Неполный файл (строк в файле {str(wb_half_s.max_row -1)})')
+            self.label_half_file.setText(f'2. Выберите Неполный файл (строк в файле {str(wb_half_s.max_row - 1)})')
             self.label_half_file.adjustSize()
-            self.lineEdit_max_string.setText(str(wb_half_s.max_row -1))
+            self.lineEdit_max_string.setText(str(wb_half_s.max_row - 1))
 
             # сформированные диапазоны обработки
             range_full_file = self.range_all_files + wb_full_s.cell(wb_full_s.max_row, wb_full_s.max_column).coordinate
@@ -269,15 +268,15 @@ class Window(PyQt5.QtWidgets.QMainWindow):
         # сделать проверку lineEdit_max_string на число
         flag_digit = None
 
-        if string_data.isdigit():
+        if string_data.isdigit() or string_data == '':
             flag_digit = True
         else:
             flag_digit = False
 
             # информационное окно
             self.window_info = PyQt5.QtWidgets.QMessageBox()
-            self.window_info.setWindowTitle('Строки')
-            self.window_info.setText(f'Вводите только цифры!')
+            self.window_info.setWindowTitle('Число')
+            self.window_info.setText(f'Вводите только цифры!\n')
             self.window_info.exec_()
 
             self.lineEdit_max_string.setText('0')
