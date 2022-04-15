@@ -1,6 +1,3 @@
-# TODO
-# убрать в информационных окнах лишнюю информацию
-
 # ...
 # INSTALL
 # pip install openpyxl
