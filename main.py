@@ -1,5 +1,5 @@
 # TODO
-# сделать проверку на пустоту lineEdit_max_string
+# убрать в информационных окнах лишнюю информацию
 
 # ...
 # INSTALL
@@ -268,18 +268,21 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             wb_half.close()
 
     def check_digit(self, string_data):
-        # сделать проверку lineEdit_max_string на число
+        # проверка lineEdit_max_string на число
         flag_digit = None
 
-        if string_data.isdigit() or string_data == '':
+        if string_data.isdigit():
             flag_digit = True
+        elif string_data == '':
+            flag_digit = False
+            self.lineEdit_max_string.setText('0')
         else:
             flag_digit = False
 
-            # информационное окно
+            # информационное окно - "введите число"
             self.window_info = PyQt5.QtWidgets.QMessageBox()
-            self.window_info.setWindowTitle('Число')
-            self.window_info.setText(f'Вводите только цифры!\n')
+            self.window_info.setWindowTitle('Только цифры')
+            self.window_info.setText(f'Вводите только цифры!')
             self.window_info.exec_()
 
             self.lineEdit_max_string.setText('0')
@@ -293,7 +296,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
         # проверка на количество выбранных строк в listWidget_specialization
         if len(specialization_selected) == 0:
-            # информационное окно о сохранении файлов
+            # информационное окно - "выберите специальность"
             self.window_info = PyQt5.QtWidgets.QMessageBox()
             self.window_info.setWindowTitle('Выберите специальности')
             self.window_info.setText(f'В списке специальностей ничего не выбрано,\n'
@@ -377,16 +380,18 @@ class Window(PyQt5.QtWidgets.QMainWindow):
             # добавление строк в Неполный файл
             # если количество строк в Неполном меньше, чем хочется, то добавить разницу строк
             if count_string_add <= 0:
-                # информационное окно
+                # информационное окно - ""
                 self.window_info = PyQt5.QtWidgets.QMessageBox()
                 self.window_info.setWindowTitle('Строки')
-                self.window_info.setText(f'Количество строк в Неполном файле больше или одинаково,\n'
-                                         f'чем в ПУНКТЕ 3, их разница равна {count_string_add}\n'
-                                         f' \n'
-                                         f'хочется чтобы было {count_string_want}\n'
-                                         f'сейчас в файле {count_string_half}\n'
-                                         f'надо добавить {count_string_add}\n'
-                                         f'могу выбрать из {count_filter_string}'
+                self.window_info.setText(f'Количество строк в Неполном файле\n'
+                                         f'одинаково или больше,\n'
+                                         f'чем число в ПУНКТЕ 3'
+                                         # f' \n'
+                                         # f'их разница равна {count_string_add}\n'
+                                         # f'хочется чтобы было {count_string_want}\n'
+                                         # f'сейчас в файле {count_string_half}\n'
+                                         # f'надо добавить {count_string_add}\n'
+                                         # f'могу выбрать из {count_filter_string}'
                                          )
                 self.window_info.exec_()
             else:
@@ -396,13 +401,15 @@ class Window(PyQt5.QtWidgets.QMainWindow):
                     self.window_info = PyQt5.QtWidgets.QMessageBox()
                     self.window_info.setWindowTitle('Строки')
                     self.window_info.setText(f'Количество строк в Полном файле по этим специальностям\n'
-                                             f'меньше, чем в ПУНКТЕ 3, их разница равна {count_real_data_add}\n'
+                                             f'меньше, чем число в ПУНКТЕ 3,\n'
                                              f'выберите ещё специальностей из списка\n'
-                                             f' \n'
-                                             f'хочется чтобы было {count_string_want}\n'
-                                             f'сейчас в файле {count_string_half}\n'
-                                             f'надо добавить {count_string_add}\n'
-                                             f'могу выбрать из {count_filter_string}')
+                                             # f' \n'
+                                             # f'их разница равна {count_real_data_add}\n'
+                                             # f'хочется чтобы было {count_string_want}\n'
+                                             # f'сейчас в файле {count_string_half}\n'
+                                             # f'надо добавить {count_string_add}\n'
+                                             # f'могу выбрать из {count_filter_string}'
+                                             )
                     self.window_info.exec_()
                 else:
                     # выбираю count_string_add штук в список случайных строк из фильтрованного
@@ -427,7 +434,7 @@ class Window(PyQt5.QtWidgets.QMainWindow):
 
                     # информационное окно о сохранении файлов
                     self.window_info = PyQt5.QtWidgets.QMessageBox()
-                    self.window_info.setWindowTitle('Файл')
+                    self.window_info.setWindowTitle('Файлы')
                     self.window_info.setText(f'Файлы сохранены и закрыты.\n'
                                              f'Заполнение сделано за {round(time_finish - time_start, 1)} секунд')
                     self.window_info.exec_()
